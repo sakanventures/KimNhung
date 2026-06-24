@@ -27,7 +27,7 @@ export const DEPARTMENTS = [
       'Tanks of live lobster, crab, tilapia and clams, plus daily fresh catch and our signature live tuna cutting events.',
     highlight: 'Live tuna cutting events',
     image:
-      '/placeholder.svg?height=900&width=720&query=fresh%20live%20seafood%20market%20display%20fish%20on%20ice%20asian%20supermarket',
+      'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=720&q=80',
   },
   {
     id: 'bakery',
@@ -36,7 +36,7 @@ export const DEPARTMENTS = [
       'Crackly French baguettes, warm bánh mì, sponge cakes and traditional pastries baked fresh every single morning.',
     highlight: 'Baked fresh daily',
     image:
-      '/placeholder.svg?height=900&width=720&query=fresh%20banh%20mi%20french%20bread%20asian%20bakery%20pastries%20display',
+      'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=720&q=80',
   },
   {
     id: 'pantry',
@@ -45,7 +45,7 @@ export const DEPARTMENTS = [
       'Thousands of sauces, noodles, rice, snacks and kitchen essentials imported from Vietnam, Thailand, Japan, Korea and beyond.',
     highlight: 'Thousands of imports',
     image:
-      '/placeholder.svg?height=900&width=720&query=asian%20grocery%20aisle%20sauces%20noodles%20snacks%20packed%20shelves',
+      'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=720&q=80',
   },
   {
     id: 'produce',
@@ -54,7 +54,7 @@ export const DEPARTMENTS = [
       'Mountains of bok choy, Thai basil, durian, rambutan, lychee and hard-to-find herbs delivered throughout the week.',
     highlight: 'Fresh durian in season',
     image:
-      '/placeholder.svg?height=900&width=720&query=fresh%20asian%20produce%20vegetables%20herbs%20bok%20choy%20colorful%20market',
+      'https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=720&q=80',
   },
   {
     id: 'beauty',
@@ -63,7 +63,7 @@ export const DEPARTMENTS = [
       'A curated wall of K-beauty and J-beauty \u2014 sheet masks, serums, sunscreens and cult skincare brands.',
     highlight: 'K-beauty & J-beauty',
     image:
-      '/placeholder.svg?height=900&width=720&query=asian%20beauty%20skincare%20cosmetics%20shelf%20kbeauty%20display',
+      'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=720&q=80',
   },
   {
     id: 'frozen',
@@ -72,7 +72,7 @@ export const DEPARTMENTS = [
       'Dumplings, bao, sliced hot pot meats, broths and everything you need for a feast at home, ready from the freezer.',
     highlight: 'Hot pot headquarters',
     image:
-      '/placeholder.svg?height=900&width=720&query=frozen%20asian%20food%20dumplings%20hot%20pot%20meat%20freezer%20aisle',
+      'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=720&q=80',
   },
 ]
 
@@ -85,7 +85,7 @@ export const SPECIALS = [
     was: '$13.99',
     tag: 'Seafood',
     image:
-      '/placeholder.svg?height=400&width=400&query=live%20lobster%20fresh%20seafood%20on%20ice',
+      'https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=400&q=80',
   },
   {
     title: 'Whole Monthong Durian',
@@ -95,7 +95,7 @@ export const SPECIALS = [
     was: '$6.99',
     tag: 'Produce',
     image:
-      '/placeholder.svg?height=400&width=400&query=whole%20durian%20fruit%20fresh%20produce',
+      'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?auto=format&fit=crop&w=400&q=80',
   },
   {
     title: 'Bánh Mì Combo',
@@ -105,7 +105,7 @@ export const SPECIALS = [
     was: '$15.00',
     tag: 'Bakery',
     image:
-      '/placeholder.svg?height=400&width=400&query=banh%20mi%20sandwich%20vietnamese%20iced%20coffee',
+      'https://images.unsplash.com/photo-1549931319-a545dcf3bc7b?auto=format&fit=crop&w=400&q=80',
   },
   {
     title: 'Jasmine Rice 25 lb',
@@ -115,7 +115,7 @@ export const SPECIALS = [
     was: '$32.99',
     tag: 'Pantry',
     image:
-      '/placeholder.svg?height=400&width=400&query=jasmine%20rice%20bag%2025%20pound%20asian%20grocery',
+      'https://images.unsplash.com/photo-1536304929831-ee1ca9d44906?auto=format&fit=crop&w=400&q=80',
   },
   {
     title: 'Korean Beef Bulgogi',
@@ -125,7 +125,7 @@ export const SPECIALS = [
     was: '$10.99',
     tag: 'Frozen',
     image:
-      '/placeholder.svg?height=400&width=400&query=thin%20sliced%20beef%20bulgogi%20hot%20pot%20meat',
+      'https://images.unsplash.com/photo-1529059997568-3d847b1154f0?auto=format&fit=crop&w=400&q=80',
   },
   {
     title: 'Fresh Bok Choy',
@@ -135,7 +135,7 @@ export const SPECIALS = [
     was: '$1.79',
     tag: 'Produce',
     image:
-      '/placeholder.svg?height=400&width=400&query=fresh%20baby%20bok%20choy%20green%20vegetable',
+      'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=400&q=80',
   },
 ]
 
@@ -179,7 +179,7 @@ export const FESTIVALS = [
     blurb:
       'Lion dancers, lucky red envelopes, bánh chưng and a full Tết collection take over the store.',
     image:
-      '/placeholder.svg?height=640&width=520&query=lunar%20new%20year%20tet%20celebration%20red%20lanterns%20lion%20dance',
+      'https://images.unsplash.com/photo-1516815231560-8f41ec531527?auto=format&fit=crop&w=520&q=80',
   },
   {
     name: 'Mid-Autumn Festival',
@@ -187,7 +187,7 @@ export const FESTIVALS = [
     blurb:
       'Mooncakes, paper lanterns and family traditions celebrating the harvest moon together.',
     image:
-      '/placeholder.svg?height=640&width=520&query=mid%20autumn%20festival%20mooncakes%20paper%20lanterns%20warm',
+      'https://images.unsplash.com/photo-1502116811450-7773df0d3b29?auto=format&fit=crop&w=520&q=80',
   },
   {
     name: 'Cooking Demos',
@@ -195,6 +195,6 @@ export const FESTIVALS = [
     blurb:
       'Free tastings, live cooking demos and seasonal product showcases from our team and partners.',
     image:
-      '/placeholder.svg?height=640&width=520&query=cooking%20demonstration%20asian%20food%20tasting%20event%20people',
+      'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=520&q=80',
   },
 ]

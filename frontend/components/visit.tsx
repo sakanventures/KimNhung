@@ -1,7 +1,13 @@
+'use client'
+
 import { MapPin, Clock, Phone, Navigation } from 'lucide-react'
 import { STORE } from '@/lib/site-data'
+import { useTranslation } from '@/lib/i18n'
 
 export function Visit() {
+  const { t } = useTranslation()
+  const v = t.visit
+
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
     STORE.mapsQuery,
   )}`
@@ -15,15 +21,13 @@ export function Visit() {
         <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
           <div className="flex flex-col">
             <span className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">
-              Plan your visit
+              {v.eyebrow}
             </span>
             <h2 className="mt-3 text-balance font-heading text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
-              Come see it for yourself
+              {v.title}
             </h2>
             <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
-              Free parking, open seven days a week. Whether you&apos;re stocking
-              the pantry or hunting for something special, there&apos;s always
-              more to discover.
+              {v.body}
             </p>
 
             <dl className="mt-8 space-y-5">
@@ -33,7 +37,7 @@ export function Visit() {
                 </span>
                 <div>
                   <dt className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                    Address
+                    {v.address}
                   </dt>
                   <dd className="font-heading text-lg font-semibold text-foreground">
                     {STORE.address}
@@ -49,7 +53,7 @@ export function Visit() {
                 </span>
                 <div>
                   <dt className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                    Hours
+                    {v.hours}
                   </dt>
                   <dd className="font-heading text-lg font-semibold text-foreground">
                     {STORE.hours}
@@ -63,7 +67,7 @@ export function Visit() {
                 </span>
                 <div>
                   <dt className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                    Phone
+                    {v.phone}
                   </dt>
                   <dd className="font-heading text-lg font-semibold text-foreground">
                     {STORE.phone}
@@ -79,13 +83,13 @@ export function Visit() {
               className="mt-8 inline-flex w-fit items-center gap-2 rounded-full bg-primary px-6 py-3 text-base font-semibold text-primary-foreground transition-transform hover:scale-[1.03]"
             >
               <Navigation className="size-4" />
-              Get Directions
+              {v.directions}
             </a>
           </div>
 
           <div className="min-h-80 overflow-hidden rounded-3xl border border-border">
             <iframe
-              title={`Map to ${STORE.name}`}
+              title={`${v.mapTitle} ${STORE.name}`}
               src={embedUrl}
               className="h-full min-h-80 w-full"
               loading="lazy"

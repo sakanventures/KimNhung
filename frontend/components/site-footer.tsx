@@ -1,5 +1,8 @@
+'use client'
+
 import { MapPin } from 'lucide-react'
-import { NAV_LINKS, STORE } from '@/lib/site-data'
+import { STORE } from '@/lib/site-data'
+import { useTranslation } from '@/lib/i18n'
 
 function FacebookIcon({ className }: { className?: string }) {
   return (
@@ -28,6 +31,18 @@ function InstagramIcon({ className }: { className?: string }) {
 }
 
 export function SiteFooter() {
+  const { t } = useTranslation()
+  const f = t.footer
+
+  const navLinks = [
+    { label: t.nav.theStore, href: '#departments' },
+    { label: t.nav.weeklySpecials, href: '#specials' },
+    { label: t.nav.foodHall, href: '#food-hall' },
+    { label: t.nav.ourStory, href: '#story' },
+    { label: t.nav.community, href: '#community' },
+    { label: t.nav.visit, href: '#visit' },
+  ]
+
   return (
     <footer className="border-t border-border bg-secondary/40">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
@@ -45,16 +60,14 @@ export function SiteFooter() {
               </span>
             </div>
             <p className="mt-4 max-w-sm text-pretty leading-relaxed text-muted-foreground">
-              Metro Detroit&apos;s destination Asian superstore. Live seafood,
-              fresh bakery, imported groceries, beauty and an indoor food hall
-              on the way.
+              {f.tagline}
             </p>
             <div className="mt-5 flex gap-3">
               <a
                 href="https://www.facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Kim Nhung Superfood on Facebook"
+                aria-label={f.facebookLabel}
                 className="flex size-10 items-center justify-center rounded-full border border-border bg-card text-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
               >
                 <FacebookIcon className="size-5" />
@@ -63,7 +76,7 @@ export function SiteFooter() {
                 href="https://www.instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Kim Nhung Superfood on Instagram"
+                aria-label={f.instagramLabel}
                 className="flex size-10 items-center justify-center rounded-full border border-border bg-card text-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
               >
                 <InstagramIcon className="size-5" />
@@ -73,10 +86,10 @@ export function SiteFooter() {
 
           <div>
             <h3 className="font-heading text-sm font-semibold uppercase tracking-[0.15em] text-foreground">
-              Explore
+              {f.explore}
             </h3>
             <ul className="mt-4 space-y-2.5">
-              {NAV_LINKS.map((link) => (
+              {navLinks.map((link) => (
                 <li key={link.href}>
                   <a
                     href={link.href}
@@ -91,7 +104,7 @@ export function SiteFooter() {
 
           <div>
             <h3 className="font-heading text-sm font-semibold uppercase tracking-[0.15em] text-foreground">
-              Visit
+              {f.visit}
             </h3>
             <address className="mt-4 flex flex-col gap-1 not-italic text-sm text-muted-foreground">
               <span className="flex items-start gap-2">
@@ -110,11 +123,10 @@ export function SiteFooter() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 sm:flex-row">
           <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} Kim Nhung Superfood. All rights
-            reserved.
+            &copy; {new Date().getFullYear()} Kim Nhung Superfood. {f.rightsReserved}
           </p>
           <p className="text-xs text-muted-foreground">
-            Madison Heights, Michigan
+            {f.location}
           </p>
         </div>
       </div>

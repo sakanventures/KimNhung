@@ -2,13 +2,16 @@
 
 import { useState, useEffect } from 'react'
 import { Menu, X, MapPin, Phone, Clock, Search, ChevronRight } from 'lucide-react'
-import { NAV_LINKS, STORE } from '@/lib/site-data'
+import { STORE } from '@/lib/site-data'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { LanguageToggle } from '@/components/language-toggle'
+import { useTranslation } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const { t, lang } = useTranslation()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8)
@@ -16,6 +19,15 @@ export function SiteHeader() {
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  const navLinks = [
+    { label: t.nav.theStore, href: '#departments' },
+    { label: t.nav.weeklySpecials, href: '#specials' },
+    { label: t.nav.foodHall, href: '#food-hall' },
+    { label: t.nav.ourStory, href: '#story' },
+    { label: t.nav.community, href: '#community' },
+    { label: t.nav.visit, href: '#visit' },
+  ]
 
   return (
     <header className="sticky top-0 z-50">
@@ -76,20 +88,21 @@ export function SiteHeader() {
             <Search className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
             <input
               type="search"
-              placeholder="Search seafood, bánh mì, snacks, beauty…"
-              aria-label="Search the store"
+              placeholder={t.header.searchPlaceholder}
+              aria-label={t.header.searchLabel}
               className="h-11 w-full rounded-full border border-border bg-muted/60 pl-12 pr-4 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:bg-background"
             />
           </form>
 
           <div className="ml-auto hidden items-center gap-2 md:flex">
+            <LanguageToggle />
             <ThemeToggle />
             <a
               href="#visit"
               className="inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
             >
               <MapPin className="size-4" />
-              Visit Us
+              {t.header.visitUs}
             </a>
           </div>
 
@@ -97,7 +110,7 @@ export function SiteHeader() {
             type="button"
             onClick={() => setOpen((v) => !v)}
             className="ml-auto inline-flex size-11 items-center justify-center rounded-full text-foreground md:hidden"
-            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-label={open ? t.header.closeMenu : t.header.openMenu}
             aria-expanded={open}
           >
             {open ? <X className="size-6" /> : <Menu className="size-6" />}
@@ -109,7 +122,7 @@ export function SiteHeader() {
           className="mx-auto hidden max-w-7xl items-center gap-1 px-4 pb-2.5 sm:px-6 lg:flex lg:px-8"
           aria-label="Primary"
         >
-          {NAV_LINKS.map((link) => (
+          {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
@@ -129,12 +142,12 @@ export function SiteHeader() {
               <Search className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
               <input
                 type="search"
-                placeholder="Search the store…"
-                aria-label="Search the store"
+                placeholder={t.header.searchLabel}
+                aria-label={t.header.searchLabel}
                 className="h-11 w-full rounded-full border border-border bg-muted/60 pl-12 pr-4 text-sm outline-none focus:border-primary focus:bg-background"
               />
             </form>
-            {NAV_LINKS.map((link) => (
+            {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
@@ -154,8 +167,14 @@ export function SiteHeader() {
               {STORE.address}, {STORE.city}
             </a>
             <div className="mt-2 flex items-center justify-between rounded-lg border border-border px-3 py-3">
-              <span className="text-sm font-semibold text-foreground">Dark mode</span>
+              <span className="text-sm font-semibold text-foreground">{t.header.darkMode}</span>
               <ThemeToggle />
+            </div>
+            <div className="flex items-center justify-between rounded-lg border border-border px-3 py-3">
+              <span className="text-sm font-semibold text-foreground">
+                {lang === 'en' ? 'Language' : 'Ngôn ngữ'}
+              </span>
+              <LanguageToggle />
             </div>
           </div>
         </div>
