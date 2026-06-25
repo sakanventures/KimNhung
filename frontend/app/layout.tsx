@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
 import { LanguageProvider } from '@/lib/i18n'
+import { CartProvider } from '@/lib/cart-context'
 import './globals.css'
 
 const jakarta = Plus_Jakarta_Sans({
@@ -40,7 +41,6 @@ export const metadata: Metadata = {
     locale: 'en_US',
     type: 'website',
   },
-  generator: 'v0.app',
   icons: {
     icon: [
       { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },
@@ -69,7 +69,9 @@ export default function RootLayout({
       <body className="font-sans antialiased">
         <LanguageProvider>
           <ThemeProvider>
-            {children}
+            <CartProvider>
+              {children}
+            </CartProvider>
           </ThemeProvider>
         </LanguageProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}

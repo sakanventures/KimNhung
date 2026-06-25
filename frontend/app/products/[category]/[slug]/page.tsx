@@ -2,8 +2,9 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { DEPARTMENTS } from '@/lib/site-data'
-import { getProductBySlug } from '@/lib/mock/products'
+import { getProductBySlug } from '@/lib/medusa/products'
 import { formatPrice } from '@/lib/utils'
+import { AddToCartButton } from '@/components/add-to-cart-button'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { AnnouncementBar } from '@/components/announcement-bar'
@@ -12,13 +13,13 @@ type Props = { params: Promise<{ category: string; slug: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category, slug } = await params
-  const product = getProductBySlug(category, slug)
+  const product = await getProductBySlug(category, slug)
   return { title: product?.title ?? 'Product' }
 }
 
 export default async function ProductDetailPage({ params }: Props) {
   const { category, slug } = await params
-  const product = getProductBySlug(category, slug)
+  const product = await getProductBySlug(category, slug)
   if (!product) notFound()
 
   const dept = DEPARTMENTS.find((d) => d.id === category)
@@ -104,18 +105,11 @@ export default async function ProductDetailPage({ params }: Props) {
                 </div>
               )}
 
-              {/* Add to cart — placeholder for Phase 2 */}
+              {/* Add to cart */}
               <div className="mt-8">
-                <button
-                  type="button"
-                  disabled
-                  className="w-full rounded-full bg-primary px-6 py-4 text-base font-bold text-primary-foreground opacity-60 transition-opacity"
-                  title="Cart coming soon"
-                >
-                  Add to cart
-                </button>
+                <AddToCartButton variantId={product.variantId} />
                 <p className="mt-2 text-center text-xs text-muted-foreground">
-                  Online ordering coming soon — visit us in store
+                  Quantity selector coming soon — defaults to 1
                 </p>
               </div>
 

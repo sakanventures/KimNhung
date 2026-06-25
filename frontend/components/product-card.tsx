@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import type { MockProduct } from '@/lib/mock/products'
+import type { StoreProduct as MockProduct } from '@/lib/medusa/products'
 import { formatPrice } from '@/lib/utils'
 
 const CATEGORY_LABELS: Record<string, string> = {

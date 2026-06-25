@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { DEPARTMENTS } from '@/lib/site-data'
-import { getProductsByCategory } from '@/lib/mock/products'
+import { getProductsByCategory } from '@/lib/medusa/products'
 import { ProductCard } from '@/components/product-card'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
@@ -21,7 +21,7 @@ export default async function CategoryPage({ params }: Props) {
   const dept = DEPARTMENTS.find((d) => d.id === category)
   if (!dept) notFound()
 
-  const products = getProductsByCategory(category)
+  const products = await getProductsByCategory(category)
 
   return (
     <>

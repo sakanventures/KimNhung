@@ -1,18 +1,21 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Menu, X, MapPin, Phone, Clock, Search, ChevronRight } from 'lucide-react'
+import { Menu, X, MapPin, Phone, Clock, Search, ChevronRight, ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
 import { STORE } from '@/lib/site-data'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { LanguageToggle } from '@/components/language-toggle'
 import { useTranslation } from '@/lib/i18n'
+import { useCart } from '@/lib/cart-context'
 import { cn } from '@/lib/utils'
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [logoError, setLogoError] = useState(false)
   const { t, lang } = useTranslation()
+  const { cartCount } = useCart()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8)
@@ -64,12 +67,21 @@ export function SiteHeader() {
       >
         <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6 lg:px-8">
           <Link href="/" className="flex shrink-0 items-center gap-2.5">
-            <span
-              className="flex size-11 items-center justify-center rounded-full bg-primary text-base font-extrabold tracking-tight text-primary-foreground"
-              aria-hidden="true"
-            >
-              KN
-            </span>
+            {logoError ? (
+              <span
+                className="flex size-11 items-center justify-center rounded-full bg-primary text-base font-extrabold tracking-tight text-primary-foreground"
+                aria-hidden="true"
+              >
+                KN
+              </span>
+            ) : (
+              <img
+                src="/logo.png"
+                alt="Kim Nhung Superfood"
+                className="size-11 rounded-full object-cover"
+                onError={() => setLogoError(true)}
+              />
+            )}
             <span className="flex flex-col leading-none">
               <span className="text-lg font-extrabold tracking-tight text-foreground">
                 Kim Nhung
@@ -99,6 +111,18 @@ export function SiteHeader() {
             <LanguageToggle />
             <ThemeToggle />
             <Link
+              href="/cart"
+              className="relative inline-flex size-11 items-center justify-center rounded-full text-foreground transition-colors hover:bg-muted"
+              aria-label={`Cart${cartCount > 0 ? `, ${cartCount} item${cartCount !== 1 ? 's' : ''}` : ''}`}
+            >
+              <ShoppingCart className="size-5" />
+              {cartCount > 0 && (
+                <span className="absolute right-1.5 top-1.5 flex size-4 items-center justify-center rounded-full bg-primary text-[0.6rem] font-extrabold text-primary-foreground">
+                  {cartCount > 9 ? '9+' : cartCount}
+                </span>
+              )}
+            </Link>
+            <Link
               href="/#visit"
               className="inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
             >
@@ -107,10 +131,22 @@ export function SiteHeader() {
             </Link>
           </div>
 
+          <Link
+            href="/cart"
+            className="relative ml-auto inline-flex size-11 items-center justify-center rounded-full text-foreground md:hidden"
+            aria-label={`Cart${cartCount > 0 ? `, ${cartCount} items` : ''}`}
+          >
+            <ShoppingCart className="size-5" />
+            {cartCount > 0 && (
+              <span className="absolute right-1.5 top-1.5 flex size-4 items-center justify-center rounded-full bg-primary text-[0.6rem] font-extrabold text-primary-foreground">
+                {cartCount > 9 ? '9+' : cartCount}
+              </span>
+            )}
+          </Link>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
-            className="ml-auto inline-flex size-11 items-center justify-center rounded-full text-foreground md:hidden"
+            className="inline-flex size-11 items-center justify-center rounded-full text-foreground md:hidden"
             aria-label={open ? t.header.closeMenu : t.header.openMenu}
             aria-expanded={open}
           >

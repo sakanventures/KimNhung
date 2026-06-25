@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { DEPARTMENTS } from '@/lib/site-data'
-import { MOCK_PRODUCTS, getProductsByCategory } from '@/lib/mock/products'
+import { getAllProducts, getProductsByCategory } from '@/lib/medusa/products'
 import { ProductCard } from '@/components/product-card'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
@@ -20,8 +20,12 @@ const CIRCLE_TINTS = [
   'bg-berry/12 ring-berry/20 group-hover:ring-berry/40',
 ]
 
-export default function ProductsPage() {
-  const saleCount = MOCK_PRODUCTS.filter((p) => p.compareAtPrice !== undefined).length
+export default async function ProductsPage() {
+  const allProducts = await getAllProducts()
+  const saleCount = allProducts.filter((p) => p.compareAtPrice !== undefined).length
+  const productsByDept = Object.fromEntries(
+    DEPARTMENTS.map((d) => [d.id, allProducts.filter((p) => p.category === d.id)]),
+  )
 
   return (
     <>
@@ -40,7 +44,7 @@ export default function ProductsPage() {
               Shop all departments
             </h1>
             <p className="mt-2 text-sm text-muted-foreground">
-              {MOCK_PRODUCTS.length} products across {DEPARTMENTS.length} departments — {saleCount} on sale this week
+              {allProducts.length} products across {DEPARTMENTS.length} departments — {saleCount} on sale this week
             </p>
           </div>
         </div>
@@ -76,7 +80,7 @@ export default function ProductsPage() {
 
         {/* Products grouped by department */}
         {DEPARTMENTS.map((dept) => {
-          const products = getProductsByCategory(dept.id)
+          const products = productsByDept[dept.id] ?? []
           if (products.length === 0) return null
           return (
             <section key={dept.id} className="py-10 lg:py-14">
