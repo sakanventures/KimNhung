@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Menu, X, MapPin, Phone, Clock, Search, ChevronRight } from 'lucide-react'
+import Link from 'next/link'
 import { STORE } from '@/lib/site-data'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { LanguageToggle } from '@/components/language-toggle'
@@ -21,12 +22,12 @@ export function SiteHeader() {
   }, [])
 
   const navLinks = [
-    { label: t.nav.theStore, href: '#departments' },
-    { label: t.nav.weeklySpecials, href: '#specials' },
-    { label: t.nav.foodHall, href: '#food-hall' },
-    { label: t.nav.ourStory, href: '#story' },
-    { label: t.nav.community, href: '#community' },
-    { label: t.nav.visit, href: '#visit' },
+    { label: t.nav.theStore, href: '/products' },
+    { label: t.nav.weeklySpecials, href: '/#specials' },
+    { label: t.nav.foodHall, href: '/#food-hall' },
+    { label: t.nav.ourStory, href: '/#story' },
+    { label: t.nav.community, href: '/#community' },
+    { label: t.nav.visit, href: '/#visit' },
   ]
 
   return (
@@ -62,7 +63,7 @@ export function SiteHeader() {
         )}
       >
         <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6 lg:px-8">
-          <a href="#top" className="flex shrink-0 items-center gap-2.5">
+          <Link href="/" className="flex shrink-0 items-center gap-2.5">
             <span
               className="flex size-11 items-center justify-center rounded-full bg-primary text-base font-extrabold tracking-tight text-primary-foreground"
               aria-hidden="true"
@@ -77,7 +78,7 @@ export function SiteHeader() {
                 Superfood
               </span>
             </span>
-          </a>
+          </Link>
 
           {/* Search */}
           <form
@@ -97,13 +98,13 @@ export function SiteHeader() {
           <div className="ml-auto hidden items-center gap-2 md:flex">
             <LanguageToggle />
             <ThemeToggle />
-            <a
-              href="#visit"
+            <Link
+              href="/#visit"
               className="inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
             >
               <MapPin className="size-4" />
               {t.header.visitUs}
-            </a>
+            </Link>
           </div>
 
           <button
@@ -123,13 +124,13 @@ export function SiteHeader() {
           aria-label="Primary"
         >
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               className="rounded-full px-3.5 py-1.5 text-sm font-semibold text-foreground/80 transition-colors hover:bg-muted hover:text-primary"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </nav>
       </div>
@@ -148,7 +149,7 @@ export function SiteHeader() {
               />
             </form>
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
@@ -156,16 +157,16 @@ export function SiteHeader() {
               >
                 {link.label}
                 <ChevronRight className="size-4 text-muted-foreground" />
-              </a>
+              </Link>
             ))}
-            <a
-              href="#visit"
+            <Link
+              href="/#visit"
               onClick={() => setOpen(false)}
               className="mt-2 inline-flex items-center justify-center gap-1.5 rounded-full bg-primary px-4 py-3 text-base font-bold text-primary-foreground"
             >
               <MapPin className="size-4" />
               {STORE.address}, {STORE.city}
-            </a>
+            </Link>
             <div className="mt-2 flex items-center justify-between rounded-lg border border-border px-3 py-3">
               <span className="text-sm font-semibold text-foreground">{t.header.darkMode}</span>
               <ThemeToggle />

@@ -1,0 +1,56 @@
+services:
+  medusa-db:
+    image: postgres:16-alpine
+    container_name: kim-nhung-medusa-db
+    environment:
+      POSTGRES_DB: kim_nhung_medusa
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - medusa_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d kim_nhung_medusa"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  strapi-db:
+    image: postgres:16-alpine
+    container_name: kim-nhung-strapi-db
+    environment:
+      POSTGRES_DB: kim_nhung_strapi
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - strapi_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d kim_nhung_strapi"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: kim-nhung-frontend
+    volumes:
+      - ./frontend:/app
+      - frontend_modules:/app/node_modules
+      - frontend_next:/app/.next
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_TELEMETRY_DISABLED=1
+      - WATCHPACK_POLLING=true
+      - NODE_ENV=development
+
+volumes:
+  medusa_pgdata:
+  strapi_pgdata:
+  frontend_modules:
+  frontend_next:
