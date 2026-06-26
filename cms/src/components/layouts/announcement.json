@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_layouts_announcements",
+  "info": {
+    "displayName": "Announcement"
+  },
+  "options": {},
+  "attributes": {
+    "RichText": {
+      "type": "component",
+      "component": "components.rich-text",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

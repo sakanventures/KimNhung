@@ -1,0 +1,50 @@
+{
+  "kind": "singleType",
+  "collectionName": "globals",
+  "info": {
+    "singularName": "global",
+    "pluralName": "globals",
+    "displayName": "Global"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "Description": {
+      "type": "string"
+    },
+    "Icon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Logo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Announcement": {
+      "type": "component",
+      "component": "layouts.announcement",
+      "repeatable": false
+    },
+    "Utility": {
+      "type": "component",
+      "component": "layouts.utility",
+      "repeatable": false
+    },
+    "NavBar": {
+      "type": "component",
+      "component": "layouts.nav-bar",
+      "repeatable": false
+    }
+  }
+}

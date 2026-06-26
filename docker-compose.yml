@@ -50,6 +50,10 @@ services:
       - NODE_ENV=development
       # MEDUSA_SERVER_URL: used by Next.js SSR inside Docker (host.docker.internal reaches the Mac host)
       - MEDUSA_SERVER_URL=http://host.docker.internal:9000
+      # STRAPI_URL: used by Next.js SSR inside Docker (host.docker.internal reaches the Mac host)
+      - STRAPI_URL=http://host.docker.internal:1337
+      # NEXT_PUBLIC_STRAPI_URL: embedded into client JS — browser runs on the Mac so localhost works
+      - NEXT_PUBLIC_STRAPI_URL=http://localhost:1337
       # NEXT_PUBLIC_MEDUSA_URL: embedded into client JS — browser runs on the Mac so localhost works
       - NEXT_PUBLIC_MEDUSA_URL=http://localhost:9000
       - NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_0ff7814764c3a2f5650e78bbea0ae40d04a6580e3522a0912f8718ad34936a7e

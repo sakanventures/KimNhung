@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_layouts_utilities",
+  "info": {
+    "displayName": "Utility"
+  },
+  "options": {},
+  "attributes": {
+    "Text": {
+      "type": "component",
+      "component": "components.icon-text",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

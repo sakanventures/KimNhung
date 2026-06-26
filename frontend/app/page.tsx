@@ -1,3 +1,5 @@
+import { getGlobal, blocksToText } from '@/data/loaders'
+import { getStrapiMedia } from '@/lib/utils'
 import { SiteHeader } from '@/components/site-header'
 import { AnnouncementBar } from '@/components/announcement-bar'
 import { Hero } from '@/components/hero'
@@ -11,11 +13,33 @@ import { Newsletter } from '@/components/newsletter'
 import { Visit } from '@/components/visit'
 import { SiteFooter } from '@/components/site-footer'
 
-export default function Page() {
+export default async function Page() {
+  const global = await getGlobal()
+
+const announcementItems = global?.Announcement?.RichText
+    .map((entry) => blocksToText(entry.RichText))
+    .filter((s) => s.length > 0)
+
+  const utilityItems = global?.Utility?.Text
+
+  const logoUrl = getStrapiMedia(global?.NavBar?.LogoText?.Logo?.url ?? null) ?? undefined
+  const darkLogoUrl = getStrapiMedia(global?.NavBar?.LogoText?.DarkLogo?.url ?? null) ?? undefined
+  const logoTitle = global?.NavBar?.LogoText?.Title
+    ? {
+        text: global.NavBar.LogoText.Title.Text,
+        description: global.NavBar.LogoText.Title.Description ?? 'Superfood',
+      }
+    : undefined
+
   return (
     <>
-      <AnnouncementBar />
-      <SiteHeader />
+      <AnnouncementBar items={announcementItems} />
+      <SiteHeader
+        utilityItems={utilityItems}
+        logoUrl={logoUrl}
+        darkLogoUrl={darkLogoUrl}
+        logoTitle={logoTitle}
+      />
       <main>
         <Hero />
         <ShopByDepartment />

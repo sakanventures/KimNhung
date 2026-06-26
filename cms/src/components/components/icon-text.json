@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_components_icon_texts",
+  "info": {
+    "displayName": "IconText"
+  },
+  "options": {},
+  "attributes": {
+    "Text": {
+      "type": "string"
+    },
+    "Icon": {
+      "type": "enumeration",
+      "enum": [
+        "Clock",
+        "Pin",
+        "Phone"
+      ]
+    },
+    "isLeft": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "config": {}
+}

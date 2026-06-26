@@ -2348,6 +2348,11 @@
     yup "0.32.9"
     zod "3.25.67"
 
+"@strapi/blocks-react-renderer@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@strapi/blocks-react-renderer/-/blocks-react-renderer-1.0.2.tgz#56b48d65a84601f803d983f12d1457257b1ec02f"
+  integrity sha512-pRV/WMreo5wyrLg7J0pw1DM9lg8U8m+QA7Bd8CPN3beUBTdDhYrFTTNZh3XveEdnURZNJu1X0aWXAg4SzVg7QA==
+
 "@strapi/cloud-cli@5.49.0":
   version "5.49.0"
   resolved "https://registry.yarnpkg.com/@strapi/cloud-cli/-/cloud-cli-5.49.0.tgz#8e04686fee5f9821fddff31943ed487b25c8290c"

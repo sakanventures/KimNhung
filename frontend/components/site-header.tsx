@@ -3,14 +3,32 @@
 import { useState, useEffect } from 'react'
 import { Menu, X, MapPin, Phone, Clock, Search, ChevronRight, ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
-import { STORE } from '@/lib/site-data'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { LanguageToggle } from '@/components/language-toggle'
 import { useTranslation } from '@/lib/i18n'
 import { useCart } from '@/lib/cart-context'
 import { cn } from '@/lib/utils'
 
-export function SiteHeader() {
+const ICON_MAP = {
+  Pin: MapPin,
+  Clock: Clock,
+  Phone: Phone,
+} as const
+
+interface UtilityItem {
+  Text: string
+  Icon: 'Clock' | 'Pin' | 'Phone'
+  isLeft: boolean
+}
+
+interface SiteHeaderProps {
+  utilityItems?: UtilityItem[]
+  logoUrl?: string
+  darkLogoUrl?: string
+  logoTitle?: { text: string; description: string }
+}
+
+export function SiteHeader({ utilityItems, logoUrl, darkLogoUrl, logoTitle }: SiteHeaderProps) {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [logoError, setLogoError] = useState(false)
@@ -36,27 +54,46 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50">
       {/* Utility bar */}
-      <div className="hidden bg-foreground text-background md:block">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-1.5 text-xs sm:px-6 lg:px-8">
-          <span className="inline-flex items-center gap-1.5">
-            <MapPin className="size-3.5 text-gold" />
-            {STORE.address}, {STORE.city}, {STORE.state} {STORE.zip}
-          </span>
-          <div className="flex items-center gap-5">
-            <span className="inline-flex items-center gap-1.5">
-              <Clock className="size-3.5 text-gold" />
-              {STORE.hours}
-            </span>
-            <a
-              href={`tel:${STORE.phone.replace(/[^0-9]/g, '')}`}
-              className="inline-flex items-center gap-1.5 transition-opacity hover:opacity-80"
-            >
-              <Phone className="size-3.5 text-gold" />
-              {STORE.phone}
-            </a>
+      {utilityItems && utilityItems.length > 0 && (
+        <div className="hidden bg-foreground text-background md:block">
+          <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-1.5 text-xs sm:px-6 lg:px-8">
+            <div className="flex items-center gap-5">
+              {utilityItems.filter((i) => i.isLeft).map((item, idx) => {
+                const Icon = ICON_MAP[item.Icon]
+                return (
+                  <span key={idx} className="inline-flex items-center gap-1.5">
+                    <Icon className="size-3.5 text-gold" />
+                    {item.Text}
+                  </span>
+                )
+              })}
+            </div>
+            <div className="flex items-center gap-5">
+              {utilityItems.filter((i) => !i.isLeft).map((item, idx) => {
+                const Icon = ICON_MAP[item.Icon]
+                if (item.Icon === 'Phone') {
+                  return (
+                    <a
+                      key={idx}
+                      href={`tel:${item.Text.replace(/[^0-9]/g, '')}`}
+                      className="inline-flex items-center gap-1.5 transition-opacity hover:opacity-80"
+                    >
+                      <Icon className="size-3.5 text-gold" />
+                      {item.Text}
+                    </a>
+                  )
+                }
+                return (
+                  <span key={idx} className="inline-flex items-center gap-1.5">
+                    <Icon className="size-3.5 text-gold" />
+                    {item.Text}
+                  </span>
+                )
+              })}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Main bar */}
       <div
@@ -67,27 +104,27 @@ export function SiteHeader() {
       >
         <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6 lg:px-8">
           <Link href="/" className="flex shrink-0 items-center gap-2.5">
-            {logoError ? (
+            {logoUrl && !logoError ? (
+              <img
+                src={logoUrl}
+                alt="Kim Nhung Superfood"
+                className="size-11 rounded-full object-cover"
+                onError={() => setLogoError(true)}
+              />
+            ) : (
               <span
                 className="flex size-11 items-center justify-center rounded-full bg-primary text-base font-extrabold tracking-tight text-primary-foreground"
                 aria-hidden="true"
               >
                 KN
               </span>
-            ) : (
-              <img
-                src="/logo.png"
-                alt="Kim Nhung Superfood"
-                className="size-11 rounded-full object-cover"
-                onError={() => setLogoError(true)}
-              />
             )}
             <span className="flex flex-col leading-none">
               <span className="text-lg font-extrabold tracking-tight text-foreground">
-                Kim Nhung
+                {logoTitle?.text ?? 'Kim Nhung'}
               </span>
               <span className="text-[0.65rem] font-bold uppercase tracking-[0.22em] text-primary">
-                Superfood
+                {logoTitle?.description ?? 'Superfood'}
               </span>
             </span>
           </Link>

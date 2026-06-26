@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_components_logo_texts",
+  "info": {
+    "displayName": "LogoText"
+  },
+  "options": {},
+  "attributes": {
+    "Logo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "DarkLogo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Title": {
+      "type": "component",
+      "component": "components.link",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}

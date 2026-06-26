@@ -1,10 +1,11 @@
 'use client'
 
-import { useTranslation } from '@/lib/i18n'
+interface AnnouncementBarProps {
+  items?: string[]
+}
 
-export function AnnouncementBar() {
-  const { t } = useTranslation()
-  const items = t.announcement.items
+export function AnnouncementBar({ items }: AnnouncementBarProps) {
+  if (!items || items.length === 0) return null
 
   return (
     <div className="overflow-hidden bg-primary py-2.5 text-primary-foreground">

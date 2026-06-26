@@ -440,6 +440,40 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
+  collectionName: 'globals';
+  info: {
+    displayName: 'Global';
+    pluralName: 'globals';
+    singularName: 'global';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Announcement: Schema.Attribute.Component<'layouts.announcement', false>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    Description: Schema.Attribute.String;
+    Icon: Schema.Attribute.Media<'images'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::global.global'
+    > &
+      Schema.Attribute.Private;
+    Logo: Schema.Attribute.Media<'images'>;
+    NavBar: Schema.Attribute.Component<'layouts.nav-bar', false>;
+    publishedAt: Schema.Attribute.DateTime;
+    Title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    Utility: Schema.Attribute.Component<'layouts.utility', false>;
+  };
+}
+
 export interface PluginContentReleasesRelease
   extends Struct.CollectionTypeSchema {
   collectionName: 'strapi_releases';
@@ -951,6 +985,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::global.global': ApiGlobalGlobal;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

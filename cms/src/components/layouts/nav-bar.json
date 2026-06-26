@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_layouts_nav_bars",
+  "info": {
+    "displayName": "NavBar"
+  },
+  "options": {},
+  "attributes": {
+    "LogoText": {
+      "type": "component",
+      "component": "components.logo-text",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}
