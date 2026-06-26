@@ -22,6 +22,7 @@ type CartContextValue = {
   cart: Cart | null
   loading: boolean
   cartCount: number
+  clearCart: () => void
   addItem: (variantId: string, quantity?: number) => Promise<void>
   updateItem: (lineItemId: string, quantity: number) => Promise<void>
   removeItem: (lineItemId: string) => Promise<void>
@@ -98,8 +99,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
     [cart],
   )
 
+  const clearCart = useCallback(() => {
+    document.cookie = 'kn_cart_id=; path=/; max-age=0'
+    setCart(null)
+  }, [])
+
   return (
-    <CartContext.Provider value={{ cart, loading, cartCount, addItem, updateItem, removeItem }}>
+    <CartContext.Provider value={{ cart, loading, cartCount, clearCart, addItem, updateItem, removeItem }}>
       {children}
     </CartContext.Provider>
   )

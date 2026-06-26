@@ -146,19 +146,13 @@ export default function CartPage() {
                 </p>
               </div>
 
-              {/* Checkout placeholder */}
               <div className="mt-4">
-                <button
-                  type="button"
-                  disabled
-                  className="w-full rounded-full bg-primary px-6 py-4 text-base font-bold text-primary-foreground opacity-60"
-                  title="Checkout coming soon"
+                <Link
+                  href="/checkout"
+                  className="block w-full rounded-full bg-primary px-6 py-4 text-center text-base font-bold text-primary-foreground transition-colors hover:bg-primary/90"
                 >
                   Proceed to checkout
-                </button>
-                <p className="mt-2 text-center text-xs text-muted-foreground">
-                  Online checkout coming soon — visit us in store
-                </p>
+                </Link>
               </div>
 
               <div className="mt-6 text-center">
