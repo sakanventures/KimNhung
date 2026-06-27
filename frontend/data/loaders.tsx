@@ -215,6 +215,18 @@ export interface MapBlock {
   Map: MapContents | null;
 }
 
+// --- Community types ---
+
+export interface CommunityPost {
+  id: number;
+  documentId: string;
+  Title: string;
+  Slug: string;
+  Description: string | null;
+  isFeatured: boolean;
+  Thumbnail: StrapiMedia | null;
+}
+
 type HomepageBlock = LayoutsHeroBlock | ShowcaseBlock | DealsBlock | StoryBlock | EateryBlock | MapBlock;
 
 interface Homepage {
@@ -246,6 +258,24 @@ export async function getHomePage(): Promise<Homepage | null> {
     return json.data;
   } catch {
     return null;
+  }
+}
+
+export async function getCommunityPosts(): Promise<CommunityPost[]> {
+  try {
+    const params = new URLSearchParams({
+      'populate[Thumbnail]': 'true',
+      'filters[isFeatured][$eq]': 'true',
+      'sort': 'createdAt:desc',
+    });
+    const res = await fetch(`${getStrapiURL()}/api/communities?${params}`, {
+      cache: 'no-store',
+    });
+    if (!res.ok) return [];
+    const json: StrapiResponse<CommunityPost[]> = await res.json();
+    return json.data ?? [];
+  } catch {
+    return [];
   }
 }
 

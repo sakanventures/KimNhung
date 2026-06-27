@@ -1,9 +1,14 @@
 'use client'
 
-import { FESTIVALS } from '@/lib/site-data'
 import { useTranslation } from '@/lib/i18n'
+import { getStrapiMedia } from '@/lib/utils'
+import type { CommunityPost } from '@/data/loaders'
 
-export function Community() {
+interface Props {
+  posts: CommunityPost[]
+}
+
+export function Community({ posts }: Props) {
   const { t } = useTranslation()
   const c = t.community
 
@@ -26,30 +31,29 @@ export function Community() {
         </div>
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {FESTIVALS.map((f, i) => {
-            const text = c.festivals[i]
+          {posts.map((post) => {
+            const imageUrl = getStrapiMedia(post.Thumbnail?.url ?? null) ?? '/placeholder.svg'
             return (
               <article
-                key={f.name}
+                key={post.id}
                 className="group overflow-hidden rounded-3xl border border-border bg-card"
               >
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
-                    src={f.image || '/placeholder.svg'}
-                    alt={`${text.name} ${c.altSuffix}`}
+                    src={imageUrl}
+                    alt={post.Thumbnail?.alternativeText ?? `${post.Title} ${c.altSuffix}`}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
                 <div className="p-6">
-                  <p className="text-xs font-semibold uppercase tracking-[0.15em] text-leaf">
-                    {text.season}
-                  </p>
-                  <h3 className="mt-2 font-heading text-2xl font-semibold text-foreground">
-                    {text.name}
+                  <h3 className="font-heading text-2xl font-semibold text-foreground">
+                    {post.Title}
                   </h3>
-                  <p className="mt-2 text-pretty leading-relaxed text-muted-foreground">
-                    {text.blurb}
-                  </p>
+                  {post.Description && (
+                    <p className="mt-2 text-pretty leading-relaxed text-muted-foreground">
+                      {post.Description}
+                    </p>
+                  )}
                 </div>
               </article>
             )

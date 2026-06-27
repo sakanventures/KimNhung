@@ -25,7 +25,8 @@
         "layouts.deals",
         "layouts.map",
         "layouts.eatery",
-        "layouts.story"
+        "layouts.story",
+        "layouts.community"
       ]
     }
   }

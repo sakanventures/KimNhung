@@ -440,6 +440,40 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCommunityCommunity extends Struct.CollectionTypeSchema {
+  collectionName: 'communities';
+  info: {
+    displayName: 'Community';
+    pluralName: 'communities';
+    singularName: 'community';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    Description: Schema.Attribute.String;
+    isFeatured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::community.community'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    SEO: Schema.Attribute.String;
+    Slug: Schema.Attribute.UID<'Title'>;
+    Thumbnail: Schema.Attribute.Media<'images'>;
+    Title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    Wallpaper: Schema.Attribute.Media<'images'>;
+  };
+}
+
 export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
   collectionName: 'globals';
   info: {
@@ -493,6 +527,7 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
         'layouts.map',
         'layouts.eatery',
         'layouts.story',
+        'layouts.community',
       ]
     >;
     createdAt: Schema.Attribute.DateTime;
@@ -1024,6 +1059,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::community.community': ApiCommunityCommunity;
       'api::global.global': ApiGlobalGlobal;
       'api::homepage.homepage': ApiHomepageHomepage;
       'plugin::content-releases.release': PluginContentReleasesRelease;

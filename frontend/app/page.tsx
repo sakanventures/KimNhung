@@ -1,4 +1,4 @@
-import { getGlobal, getHomePage, blocksToText, type ShowcaseBlock, type DealsBlock, type StoryBlock, type EateryBlock, type MapBlock } from '@/data/loaders'
+import { getGlobal, getHomePage, getCommunityPosts, blocksToText, type ShowcaseBlock, type DealsBlock, type StoryBlock, type EateryBlock, type MapBlock } from '@/data/loaders'
 import { getStrapiMedia } from '@/lib/utils'
 import { getSaleProducts } from '@/lib/medusa/products'
 import { SiteHeader } from '@/components/site-header'
@@ -15,10 +15,11 @@ import { Visit } from '@/components/visit'
 import { SiteFooter } from '@/components/site-footer'
 
 export default async function Page() {
-  const [global, homepage, saleProducts] = await Promise.all([
+  const [global, homepage, saleProducts, communityPosts] = await Promise.all([
     getGlobal(),
     getHomePage(),
     getSaleProducts().catch(() => []),
+    getCommunityPosts(),
   ])
   const heroBlock = homepage?.Blocks?.find(b => b.__component === 'layouts.hero')
   const heroData = heroBlock?.Hero
@@ -74,7 +75,7 @@ const announcementItems = global?.Announcement?.RichText
         <Departments mapData={mapBlock} />
         <FoodHall eateryData={eateryBlock} />
         <Story storyData={storyBlock} />
-        <Community />
+        <Community posts={communityPosts} />
         <Newsletter />
         <Visit />
       </main>

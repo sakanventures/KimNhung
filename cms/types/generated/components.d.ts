@@ -165,6 +165,16 @@ export interface LayoutsAnnouncement extends Struct.ComponentSchema {
   };
 }
 
+export interface LayoutsCommunity extends Struct.ComponentSchema {
+  collectionName: 'components_layouts_communities';
+  info: {
+    displayName: 'Community';
+  };
+  attributes: {
+    Info: Schema.Attribute.Component<'components.information', true>;
+  };
+}
+
 export interface LayoutsDeals extends Struct.ComponentSchema {
   collectionName: 'components_layouts_deals';
   info: {
@@ -272,6 +282,7 @@ declare module '@strapi/strapi' {
       'contents.showcase-contents': ContentsShowcaseContents;
       'contents.story-contents': ContentsStoryContents;
       'layouts.announcement': LayoutsAnnouncement;
+      'layouts.community': LayoutsCommunity;
       'layouts.deals': LayoutsDeals;
       'layouts.eatery': LayoutsEatery;
       'layouts.hero': LayoutsHero;

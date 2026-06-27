@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_layouts_communities",
+  "info": {
+    "displayName": "Community"
+  },
+  "options": {},
+  "attributes": {
+    "Info": {
+      "type": "component",
+      "component": "components.information",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}
