@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_layouts_eateries",
+  "info": {
+    "displayName": "Eatery"
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "Description": {
+      "type": "string"
+    },
+    "Badge": {
+      "type": "string"
+    },
+    "Info": {
+      "type": "component",
+      "component": "components.information",
+      "repeatable": true
+    },
+    "RichText": {
+      "type": "component",
+      "component": "components.rich-text",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

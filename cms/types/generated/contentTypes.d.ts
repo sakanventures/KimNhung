@@ -486,7 +486,13 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
   };
   attributes: {
     Blocks: Schema.Attribute.DynamicZone<
-      ['layouts.hero', 'layouts.showcase', 'layouts.deals']
+      [
+        'layouts.hero',
+        'layouts.showcase',
+        'layouts.deals',
+        'layouts.map',
+        'layouts.eatery',
+      ]
     >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &

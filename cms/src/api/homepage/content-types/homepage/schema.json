@@ -22,7 +22,9 @@
       "components": [
         "layouts.hero",
         "layouts.showcase",
-        "layouts.deals"
+        "layouts.deals",
+        "layouts.map",
+        "layouts.eatery"
       ]
     }
   }

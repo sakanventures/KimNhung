@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_layouts_maps",
+  "info": {
+    "displayName": "Map"
+  },
+  "options": {},
+  "attributes": {
+    "Map": {
+      "type": "component",
+      "component": "contents.map-contents",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}

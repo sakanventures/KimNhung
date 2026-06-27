@@ -3,10 +3,29 @@
 import { UtensilsCrossed } from 'lucide-react'
 import { VENDORS } from '@/lib/site-data'
 import { useTranslation } from '@/lib/i18n'
+import type { EateryBlock } from '@/data/loaders'
 
-export function FoodHall() {
+export function FoodHall({ eateryData }: { eateryData?: EateryBlock }) {
   const { t } = useTranslation()
   const f = t.foodHall
+
+  const badge = eateryData?.Badge ?? f.eyebrow
+  const title = eateryData?.Title ?? f.title
+  const description = eateryData?.Description ?? f.body
+  const info = eateryData?.Info ?? []
+
+  const vendors =
+    info.length > 0
+      ? info.map((item, i) => ({
+          name: item.Title ?? VENDORS[i]?.name ?? '',
+          cuisine: item.Badge ?? f.vendors[i]?.cuisine ?? '',
+          note: item.Description ?? f.vendors[i]?.note ?? '',
+        }))
+      : VENDORS.map((v, i) => ({
+          name: v.name,
+          cuisine: f.vendors[i]?.cuisine ?? '',
+          note: f.vendors[i]?.note ?? '',
+        }))
 
   return (
     <section
@@ -17,36 +36,33 @@ export function FoodHall() {
         <div className="flex flex-col gap-5 text-center">
           <span className="mx-auto inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em]">
             <UtensilsCrossed className="size-3.5" />
-            {f.eyebrow}
+            {badge}
           </span>
           <h2 className="mx-auto max-w-3xl text-balance font-heading text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
-            {f.title}
+            {title}
           </h2>
           <p className="mx-auto max-w-2xl text-pretty text-lg leading-relaxed text-primary-foreground/85">
-            {f.body}
+            {description}
           </p>
         </div>
 
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {VENDORS.map((v, i) => {
-            const text = f.vendors[i]
-            return (
-              <div
-                key={v.name}
-                className="rounded-2xl border border-primary-foreground/20 bg-primary-foreground/5 p-6 backdrop-blur-sm"
-              >
-                <p className="text-xs font-semibold uppercase tracking-[0.15em] text-accent">
-                  {text.cuisine}
-                </p>
-                <h3 className="mt-2 font-heading text-2xl font-semibold">
-                  {v.name}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-primary-foreground/80">
-                  {text.note}
-                </p>
-              </div>
-            )
-          })}
+          {vendors.map((v) => (
+            <div
+              key={v.name}
+              className="rounded-2xl border border-primary-foreground/20 bg-primary-foreground/5 p-6 backdrop-blur-sm"
+            >
+              <p className="text-xs font-semibold uppercase tracking-[0.15em] text-accent">
+                {v.cuisine}
+              </p>
+              <h3 className="mt-2 font-heading text-2xl font-semibold">
+                {v.name}
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-primary-foreground/80">
+                {v.note}
+              </p>
+            </div>
+          ))}
         </div>
 
         <p className="mt-10 text-center text-sm text-primary-foreground/70">

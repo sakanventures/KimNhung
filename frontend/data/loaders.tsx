@@ -144,7 +144,48 @@ export interface DealsBlock {
   Link: HeroLink[];
 }
 
-type HomepageBlock = LayoutsHeroBlock | ShowcaseBlock | DealsBlock;
+// --- Eatery types ---
+
+export interface EateryInfo {
+  id: number;
+  Title: string | null;
+  Description: string | null;
+  Badge: string | null;
+}
+
+export interface EateryBlock {
+  __component: 'layouts.eatery';
+  id: number;
+  Title: string | null;
+  Description: string | null;
+  Badge: string | null;
+  Info: EateryInfo[];
+}
+
+// --- Map types ---
+
+export interface AisleItem {
+  id: number;
+  Title: string | null;
+  Description: string | null;
+  Image: StrapiMedia | null;
+}
+
+export interface MapContents {
+  id: number;
+  Title: string | null;
+  Description: string | null;
+  Badge: string | null;
+  Aisle: AisleItem[];
+}
+
+export interface MapBlock {
+  __component: 'layouts.map';
+  id: number;
+  Map: MapContents | null;
+}
+
+type HomepageBlock = LayoutsHeroBlock | ShowcaseBlock | DealsBlock | EateryBlock | MapBlock;
 
 interface Homepage {
   Title: string | null;
@@ -161,6 +202,8 @@ export async function getHomePage(): Promise<Homepage | null> {
       'populate[Blocks][on][layouts.showcase][populate][Showcase][populate][Image]': 'true',
       'populate[Blocks][on][layouts.showcase][populate][Showcase][populate][Link]': 'true',
       'populate[Blocks][on][layouts.deals][populate][Link]': 'true',
+      'populate[Blocks][on][layouts.eatery][populate][Info]': 'true',
+      'populate[Blocks][on][layouts.map][populate][Map][populate][Aisle][populate][Image]': 'true',
     });
     const res = await fetch(`${getStrapiURL()}/api/homepage?${params}`, {
       cache: 'no-store',

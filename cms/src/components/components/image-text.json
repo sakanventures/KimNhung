@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_components_image_texts",
+  "info": {
+    "displayName": "ImageText"
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "Description": {
+      "type": "string"
+    },
+    "Image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  },
+  "config": {}
+}

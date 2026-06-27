@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_contents_map_contents",
+  "info": {
+    "displayName": "MapContents"
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "Description": {
+      "type": "string"
+    },
+    "Badge": {
+      "type": "string"
+    },
+    "Aisle": {
+      "type": "component",
+      "component": "components.image-text",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

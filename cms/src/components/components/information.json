@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_components_information",
+  "info": {
+    "displayName": "Information"
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "Description": {
+      "type": "string"
+    },
+    "Badge": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

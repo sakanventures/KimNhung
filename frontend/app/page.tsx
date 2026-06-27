@@ -1,4 +1,4 @@
-import { getGlobal, getHomePage, blocksToText, type ShowcaseBlock, type DealsBlock } from '@/data/loaders'
+import { getGlobal, getHomePage, blocksToText, type ShowcaseBlock, type DealsBlock, type EateryBlock, type MapBlock } from '@/data/loaders'
 import { getStrapiMedia } from '@/lib/utils'
 import { getSaleProducts } from '@/lib/medusa/products'
 import { SiteHeader } from '@/components/site-header'
@@ -31,6 +31,14 @@ export default async function Page() {
     (b): b is DealsBlock => b.__component === 'layouts.deals'
   )
 
+  const eateryBlock = homepage?.Blocks?.find(
+    (b): b is EateryBlock => b.__component === 'layouts.eatery'
+  )
+
+  const mapBlock = homepage?.Blocks?.find(
+    (b): b is MapBlock => b.__component === 'layouts.map'
+  )
+
 const announcementItems = global?.Announcement?.RichText
     .map((entry) => blocksToText(entry.RichText))
     .filter((s) => s.length > 0)
@@ -59,8 +67,8 @@ const announcementItems = global?.Announcement?.RichText
         <Hero heroData={heroData} />
         <ShopByDepartment showcaseData={showcaseBlock} />
         <WeeklySpecials dealsData={dealsBlock} products={saleProducts} />
-        <Departments />
-        <FoodHall />
+        <Departments mapData={mapBlock} />
+        <FoodHall eateryData={eateryBlock} />
         <Story />
         <Community />
         <Newsletter />
