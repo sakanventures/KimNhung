@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_components_bulletins",
+  "info": {
+    "displayName": "Bulletin"
+  },
+  "options": {},
+  "attributes": {
+    "isVertical": {
+      "type": "boolean",
+      "default": false
+    },
+    "Variant": {
+      "type": "enumeration",
+      "enum": [
+        "check",
+        "point"
+      ]
+    },
+    "Text": {
+      "type": "component",
+      "component": "components.short-text",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

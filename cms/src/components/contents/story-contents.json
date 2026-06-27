@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_contents_story_contents",
+  "info": {
+    "displayName": "StoryContents"
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "Description": {
+      "type": "string"
+    },
+    "Badge": {
+      "type": "string"
+    },
+    "Image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "RichText": {
+      "type": "component",
+      "component": "components.rich-text",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

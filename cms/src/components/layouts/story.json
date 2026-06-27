@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_layouts_stories",
+  "info": {
+    "displayName": "Story"
+  },
+  "options": {},
+  "attributes": {
+    "Story": {
+      "type": "component",
+      "component": "contents.story-contents",
+      "repeatable": true
+    },
+    "Bulletin": {
+      "type": "component",
+      "component": "components.bulletin",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

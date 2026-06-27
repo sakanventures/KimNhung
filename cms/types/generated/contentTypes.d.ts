@@ -492,6 +492,7 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
         'layouts.deals',
         'layouts.map',
         'layouts.eatery',
+        'layouts.story',
       ]
     >;
     createdAt: Schema.Attribute.DateTime;

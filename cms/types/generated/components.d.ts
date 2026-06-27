@@ -1,5 +1,17 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface ComponentsBulletin extends Struct.ComponentSchema {
+  collectionName: 'components_components_bulletins';
+  info: {
+    displayName: 'Bulletin';
+  };
+  attributes: {
+    isVertical: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    Text: Schema.Attribute.Component<'components.short-text', true>;
+    Variant: Schema.Attribute.Enumeration<['check', 'point']>;
+  };
+}
+
 export interface ComponentsIconText extends Struct.ComponentSchema {
   collectionName: 'components_components_icon_texts';
   info: {
@@ -75,6 +87,16 @@ export interface ComponentsRichText extends Struct.ComponentSchema {
   };
 }
 
+export interface ComponentsShortText extends Struct.ComponentSchema {
+  collectionName: 'components_components_short_texts';
+  info: {
+    displayName: 'ShortText';
+  };
+  attributes: {
+    Text: Schema.Attribute.String;
+  };
+}
+
 export interface ContentsHeroContents extends Struct.ComponentSchema {
   collectionName: 'components_contents_hero_contents';
   info: {
@@ -115,6 +137,20 @@ export interface ContentsShowcaseContents extends Struct.ComponentSchema {
   attributes: {
     Image: Schema.Attribute.Media<'images'>;
     Link: Schema.Attribute.Component<'components.link', true>;
+    Title: Schema.Attribute.String;
+  };
+}
+
+export interface ContentsStoryContents extends Struct.ComponentSchema {
+  collectionName: 'components_contents_story_contents';
+  info: {
+    displayName: 'StoryContents';
+  };
+  attributes: {
+    Badge: Schema.Attribute.String;
+    Description: Schema.Attribute.String;
+    Image: Schema.Attribute.Media<'images'>;
+    RichText: Schema.Attribute.Component<'components.rich-text', true>;
     Title: Schema.Attribute.String;
   };
 }
@@ -199,6 +235,17 @@ export interface LayoutsShowcase extends Struct.ComponentSchema {
   };
 }
 
+export interface LayoutsStory extends Struct.ComponentSchema {
+  collectionName: 'components_layouts_stories';
+  info: {
+    displayName: 'Story';
+  };
+  attributes: {
+    Bulletin: Schema.Attribute.Component<'components.bulletin', true>;
+    Story: Schema.Attribute.Component<'contents.story-contents', true>;
+  };
+}
+
 export interface LayoutsUtility extends Struct.ComponentSchema {
   collectionName: 'components_layouts_utilities';
   info: {
@@ -212,15 +259,18 @@ export interface LayoutsUtility extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
+      'components.bulletin': ComponentsBulletin;
       'components.icon-text': ComponentsIconText;
       'components.image-text': ComponentsImageText;
       'components.information': ComponentsInformation;
       'components.link': ComponentsLink;
       'components.logo-text': ComponentsLogoText;
       'components.rich-text': ComponentsRichText;
+      'components.short-text': ComponentsShortText;
       'contents.hero-contents': ContentsHeroContents;
       'contents.map-contents': ContentsMapContents;
       'contents.showcase-contents': ContentsShowcaseContents;
+      'contents.story-contents': ContentsStoryContents;
       'layouts.announcement': LayoutsAnnouncement;
       'layouts.deals': LayoutsDeals;
       'layouts.eatery': LayoutsEatery;
@@ -228,6 +278,7 @@ declare module '@strapi/strapi' {
       'layouts.map': LayoutsMap;
       'layouts.nav-bar': LayoutsNavBar;
       'layouts.showcase': LayoutsShowcase;
+      'layouts.story': LayoutsStory;
       'layouts.utility': LayoutsUtility;
     }
   }

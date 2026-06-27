@@ -144,6 +144,36 @@ export interface DealsBlock {
   Link: HeroLink[];
 }
 
+// --- Story types ---
+
+export interface ShortText {
+  id: number;
+  Text: string | null;
+}
+
+export interface BulletinBlock {
+  id: number;
+  isVertical: boolean | null;
+  Variant: 'check' | 'point' | null;
+  Text: ShortText[];
+}
+
+export interface StoryContents {
+  id: number;
+  Title: string | null;
+  Description: string | null;
+  Badge: string | null;
+  Image: StrapiMedia & { caption?: string | null } | null;
+  RichText: { id: number; RichText: unknown[] }[];
+}
+
+export interface StoryBlock {
+  __component: 'layouts.story';
+  id: number;
+  Story: StoryContents[];
+  Bulletin: BulletinBlock[];
+}
+
 // --- Eatery types ---
 
 export interface EateryInfo {
@@ -185,7 +215,7 @@ export interface MapBlock {
   Map: MapContents | null;
 }
 
-type HomepageBlock = LayoutsHeroBlock | ShowcaseBlock | DealsBlock | EateryBlock | MapBlock;
+type HomepageBlock = LayoutsHeroBlock | ShowcaseBlock | DealsBlock | StoryBlock | EateryBlock | MapBlock;
 
 interface Homepage {
   Title: string | null;
@@ -202,6 +232,9 @@ export async function getHomePage(): Promise<Homepage | null> {
       'populate[Blocks][on][layouts.showcase][populate][Showcase][populate][Image]': 'true',
       'populate[Blocks][on][layouts.showcase][populate][Showcase][populate][Link]': 'true',
       'populate[Blocks][on][layouts.deals][populate][Link]': 'true',
+      'populate[Blocks][on][layouts.story][populate][Story][populate][Image]': 'true',
+      'populate[Blocks][on][layouts.story][populate][Story][populate][RichText]': 'true',
+      'populate[Blocks][on][layouts.story][populate][Bulletin][populate][Text]': 'true',
       'populate[Blocks][on][layouts.eatery][populate][Info]': 'true',
       'populate[Blocks][on][layouts.map][populate][Map][populate][Aisle][populate][Image]': 'true',
     });
