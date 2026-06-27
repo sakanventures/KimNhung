@@ -1,5 +1,6 @@
-import { getGlobal, getHomePage, blocksToText } from '@/data/loaders'
+import { getGlobal, getHomePage, blocksToText, type ShowcaseBlock, type DealsBlock } from '@/data/loaders'
 import { getStrapiMedia } from '@/lib/utils'
+import { getSaleProducts } from '@/lib/medusa/products'
 import { SiteHeader } from '@/components/site-header'
 import { AnnouncementBar } from '@/components/announcement-bar'
 import { Hero } from '@/components/hero'
@@ -14,9 +15,21 @@ import { Visit } from '@/components/visit'
 import { SiteFooter } from '@/components/site-footer'
 
 export default async function Page() {
-  const [global, homepage] = await Promise.all([getGlobal(), getHomePage()])
+  const [global, homepage, saleProducts] = await Promise.all([
+    getGlobal(),
+    getHomePage(),
+    getSaleProducts().catch(() => []),
+  ])
   const heroBlock = homepage?.Blocks?.find(b => b.__component === 'layouts.hero')
   const heroData = heroBlock?.Hero
+
+  const showcaseBlock = homepage?.Blocks?.find(
+    (b): b is ShowcaseBlock => b.__component === 'layouts.showcase'
+  )
+
+  const dealsBlock = homepage?.Blocks?.find(
+    (b): b is DealsBlock => b.__component === 'layouts.deals'
+  )
 
 const announcementItems = global?.Announcement?.RichText
     .map((entry) => blocksToText(entry.RichText))
@@ -28,7 +41,7 @@ const announcementItems = global?.Announcement?.RichText
   const darkLogoUrl = getStrapiMedia(global?.NavBar?.LogoText?.DarkLogo?.url ?? null) ?? undefined
   const logoTitle = global?.NavBar?.LogoText?.Title
     ? {
-        text: global.NavBar.LogoText.Title.Text,
+        text: global.NavBar.LogoText.Title.Title,
         description: global.NavBar.LogoText.Title.Description ?? 'Superfood',
       }
     : undefined
@@ -44,8 +57,8 @@ const announcementItems = global?.Announcement?.RichText
       />
       <main>
         <Hero heroData={heroData} />
-        <ShopByDepartment />
-        <WeeklySpecials />
+        <ShopByDepartment showcaseData={showcaseBlock} />
+        <WeeklySpecials dealsData={dealsBlock} products={saleProducts} />
         <Departments />
         <FoodHall />
         <Story />

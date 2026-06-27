@@ -65,7 +65,7 @@ export function Hero({ heroData }: { heroData?: HeroContent[] }) {
                         rel={link.isExternal ? 'noopener noreferrer' : undefined}
                         className="inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-base font-bold text-foreground transition-transform hover:scale-[1.03]"
                       >
-                        {link.Text}
+                        {link.Title}
                         <ArrowRight className="size-4" />
                       </a>
                     ) : (
@@ -76,7 +76,7 @@ export function Hero({ heroData }: { heroData?: HeroContent[] }) {
                         rel={link.isExternal ? 'noopener noreferrer' : undefined}
                         className="inline-flex items-center gap-2 rounded-full bg-background/15 px-6 py-3 text-base font-bold backdrop-blur transition-colors hover:bg-background/25"
                       >
-                        {link.Text}
+                        {link.Title}
                       </a>
                     ))}
                   </div>
@@ -121,7 +121,7 @@ export function Hero({ heroData }: { heroData?: HeroContent[] }) {
                       )}
                       {card.Link?.[0] && (
                         <span className="mt-2 inline-flex items-center gap-1 text-sm font-bold underline-offset-2 group-hover:underline">
-                          {card.Link[0].Text}
+                          {card.Link[0].Title}
                           <ArrowRight className="size-4" />
                         </span>
                       )}

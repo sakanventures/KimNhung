@@ -10,6 +10,7 @@ const baseUrl =
 export const medusa = new Medusa({
   baseUrl,
   publishableKey: process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY!,
+  fetchOptions: { cache: 'no-store' },
 })
 
 export const REGION_ID = process.env.NEXT_PUBLIC_MEDUSA_REGION_ID!

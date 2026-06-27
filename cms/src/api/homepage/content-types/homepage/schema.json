@@ -20,7 +20,9 @@
     "Blocks": {
       "type": "dynamiczone",
       "components": [
-        "layouts.hero"
+        "layouts.hero",
+        "layouts.showcase",
+        "layouts.deals"
       ]
     }
   }

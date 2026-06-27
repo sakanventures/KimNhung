@@ -21,7 +21,7 @@ export interface ComponentsLink extends Struct.ComponentSchema {
     Description: Schema.Attribute.String;
     isButton: Schema.Attribute.Boolean;
     isExternal: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
-    Text: Schema.Attribute.String;
+    Title: Schema.Attribute.String;
     Url: Schema.Attribute.String;
     Variant: Schema.Attribute.Enumeration<
       ['None', 'Primary', 'Secondary', 'Outline', 'Ghost', 'Underline']
@@ -70,6 +70,18 @@ export interface ContentsHeroContents extends Struct.ComponentSchema {
   };
 }
 
+export interface ContentsShowcaseContents extends Struct.ComponentSchema {
+  collectionName: 'components_contents_showcase_contents';
+  info: {
+    displayName: 'ShowcaseContents';
+  };
+  attributes: {
+    Image: Schema.Attribute.Media<'images'>;
+    Link: Schema.Attribute.Component<'components.link', true>;
+    Title: Schema.Attribute.String;
+  };
+}
+
 export interface LayoutsAnnouncement extends Struct.ComponentSchema {
   collectionName: 'components_layouts_announcements';
   info: {
@@ -77,6 +89,19 @@ export interface LayoutsAnnouncement extends Struct.ComponentSchema {
   };
   attributes: {
     RichText: Schema.Attribute.Component<'components.rich-text', true>;
+  };
+}
+
+export interface LayoutsDeals extends Struct.ComponentSchema {
+  collectionName: 'components_layouts_deals';
+  info: {
+    displayName: 'Deals';
+  };
+  attributes: {
+    Badge: Schema.Attribute.String;
+    Description: Schema.Attribute.String;
+    Link: Schema.Attribute.Component<'components.link', true>;
+    Title: Schema.Attribute.String;
   };
 }
 
@@ -100,6 +125,19 @@ export interface LayoutsNavBar extends Struct.ComponentSchema {
   };
 }
 
+export interface LayoutsShowcase extends Struct.ComponentSchema {
+  collectionName: 'components_layouts_showcases';
+  info: {
+    displayName: 'Showcase';
+  };
+  attributes: {
+    Description: Schema.Attribute.String;
+    Link: Schema.Attribute.Component<'components.link', true>;
+    Showcase: Schema.Attribute.Component<'contents.showcase-contents', true>;
+    Title: Schema.Attribute.String;
+  };
+}
+
 export interface LayoutsUtility extends Struct.ComponentSchema {
   collectionName: 'components_layouts_utilities';
   info: {
@@ -118,9 +156,12 @@ declare module '@strapi/strapi' {
       'components.logo-text': ComponentsLogoText;
       'components.rich-text': ComponentsRichText;
       'contents.hero-contents': ContentsHeroContents;
+      'contents.showcase-contents': ContentsShowcaseContents;
       'layouts.announcement': LayoutsAnnouncement;
+      'layouts.deals': LayoutsDeals;
       'layouts.hero': LayoutsHero;
       'layouts.nav-bar': LayoutsNavBar;
+      'layouts.showcase': LayoutsShowcase;
       'layouts.utility': LayoutsUtility;
     }
   }

@@ -5,7 +5,7 @@ export type StoreProduct = MockProduct & { variantId: string }
 
 // Fields added on top of the storefront default set
 const PRODUCT_FIELDS =
-  '+categories.id,+categories.handle,+categories.name,+variants.calculated_price,+variants.metadata,+tags'
+  '+categories.id,+categories.handle,+categories.name,+variants.calculated_price,+variants.metadata,+tags,+images'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function normalize(p: any): StoreProduct {
@@ -22,7 +22,7 @@ function normalize(p: any): StoreProduct {
     slug: p.handle,
     category: p.categories?.[0]?.handle ?? '',
     description: p.description ?? '',
-    thumbnail: p.thumbnail ?? '',
+    thumbnail: p.thumbnail ?? p.images?.[0]?.url ?? '',
     price: calculatedAmount,
     compareAtPrice: isOnSale ? originalAmount : undefined,
     unit: variant.metadata?.unit ?? 'each',
@@ -80,6 +80,11 @@ export async function getProductBySlug(
   if (!inCategory) return undefined
 
   return normalize(product)
+}
+
+export async function getSaleProducts(): Promise<StoreProduct[]> {
+  const all = await getAllProducts()
+  return all.filter(p => p.compareAtPrice !== undefined)
 }
 
 export type { MockProduct }

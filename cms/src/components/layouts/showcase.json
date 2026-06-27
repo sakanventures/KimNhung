@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_layouts_showcases",
+  "info": {
+    "displayName": "Showcase"
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "Description": {
+      "type": "string"
+    },
+    "Link": {
+      "type": "component",
+      "component": "components.link",
+      "repeatable": true
+    },
+    "Showcase": {
+      "type": "component",
+      "component": "contents.showcase-contents",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_contents_showcase_contents",
+  "info": {
+    "displayName": "ShowcaseContents"
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "Image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Link": {
+      "type": "component",
+      "component": "components.link",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

@@ -34,7 +34,7 @@ interface IconText {
 
 interface Link {
   id: number;
-  Text: string;
+  Title: string;
   Description: string | null;
   Url: string;
   isExternal: boolean;
@@ -90,7 +90,7 @@ export type HeroColorEnum = 'Black' | 'Blue' | 'Brown' | 'Green' | 'Orange' | 'R
 
 export interface HeroLink {
   id: number;
-  Text: string;
+  Title: string;
   Url: string;
   isButton: boolean | null;
   isExternal: boolean;
@@ -115,10 +115,41 @@ interface LayoutsHeroBlock {
   Hero: HeroContent[];
 }
 
+// --- Showcase types ---
+
+export interface ShowcaseItem {
+  id: number;
+  Title: string | null;
+  Image: StrapiMedia | null;
+  Link: HeroLink[];
+}
+
+export interface ShowcaseBlock {
+  __component: 'layouts.showcase';
+  id: number;
+  Title: string | null;
+  Description: string | null;
+  Link: HeroLink[];
+  Showcase: ShowcaseItem[];
+}
+
+// --- Deals types ---
+
+export interface DealsBlock {
+  __component: 'layouts.deals';
+  id: number;
+  Title: string | null;
+  Description: string | null;
+  Badge: string | null;
+  Link: HeroLink[];
+}
+
+type HomepageBlock = LayoutsHeroBlock | ShowcaseBlock | DealsBlock;
+
 interface Homepage {
   Title: string | null;
   Description: string | null;
-  Blocks: LayoutsHeroBlock[];
+  Blocks: HomepageBlock[];
 }
 
 export async function getHomePage(): Promise<Homepage | null> {
@@ -126,6 +157,10 @@ export async function getHomePage(): Promise<Homepage | null> {
     const params = new URLSearchParams({
       'populate[Blocks][on][layouts.hero][populate][Hero][populate][Image]': 'true',
       'populate[Blocks][on][layouts.hero][populate][Hero][populate][Link]': 'true',
+      'populate[Blocks][on][layouts.showcase][populate][Link]': 'true',
+      'populate[Blocks][on][layouts.showcase][populate][Showcase][populate][Image]': 'true',
+      'populate[Blocks][on][layouts.showcase][populate][Showcase][populate][Link]': 'true',
+      'populate[Blocks][on][layouts.deals][populate][Link]': 'true',
     });
     const res = await fetch(`${getStrapiURL()}/api/homepage?${params}`, {
       cache: 'no-store',

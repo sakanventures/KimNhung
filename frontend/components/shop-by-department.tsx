@@ -2,6 +2,8 @@
 
 import { DEPARTMENTS } from '@/lib/site-data'
 import { useTranslation } from '@/lib/i18n'
+import { getStrapiMedia } from '@/lib/utils'
+import type { ShowcaseBlock } from '@/data/loaders'
 
 const CIRCLE_TINTS = [
   'bg-primary/10 ring-primary/15 group-hover:ring-primary/30',
@@ -12,9 +14,71 @@ const CIRCLE_TINTS = [
   'bg-berry/12 ring-berry/20 group-hover:ring-berry/40',
 ]
 
-export function ShopByDepartment() {
+export function ShopByDepartment({ showcaseData }: { showcaseData?: ShowcaseBlock }) {
   const { t } = useTranslation()
 
+  if (showcaseData && showcaseData.Showcase.length > 0) {
+    const sectionLink = showcaseData.Link?.[0]
+
+    return (
+      <section id="shop" className="scroll-mt-28 bg-background py-10 lg:py-14">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-6 flex items-end justify-between gap-4">
+            <div>
+              <h2 className="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
+                {showcaseData.Title}
+              </h2>
+              {showcaseData.Description && (
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {showcaseData.Description}
+                </p>
+              )}
+            </div>
+            {sectionLink && (
+              <a
+                href={sectionLink.Url}
+                target={sectionLink.isExternal ? '_blank' : undefined}
+                rel={sectionLink.isExternal ? 'noopener noreferrer' : undefined}
+                className="hidden shrink-0 text-sm font-bold text-primary hover:underline sm:block"
+              >
+                {sectionLink.Title}
+              </a>
+            )}
+          </div>
+
+          <ul className="grid grid-cols-3 gap-x-3 gap-y-6 sm:grid-cols-6">
+            {showcaseData.Showcase.map((item, i) => {
+              const imgUrl = getStrapiMedia(item.Image?.url ?? null)
+              const href = item.Link?.[0]?.Url ?? '#departments'
+              return (
+                <li key={item.id}>
+                  <a
+                    href={href}
+                    className="group flex flex-col items-center gap-3 text-center"
+                  >
+                    <span
+                      className={`relative aspect-square w-full overflow-hidden rounded-full ring-4 ring-inset transition-all group-hover:-translate-y-1 ${CIRCLE_TINTS[i % CIRCLE_TINTS.length]}`}
+                    >
+                      <img
+                        src={imgUrl ?? '/placeholder.svg'}
+                        alt={item.Image?.alternativeText ?? item.Title ?? ''}
+                        className="size-full object-cover transition-transform duration-300 group-hover:scale-110"
+                      />
+                    </span>
+                    <span className="text-xs font-bold leading-tight text-foreground sm:text-sm">
+                      {item.Title}
+                    </span>
+                  </a>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  // Fallback: hardcoded i18n layout
   return (
     <section id="shop" className="scroll-mt-28 bg-background py-10 lg:py-14">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

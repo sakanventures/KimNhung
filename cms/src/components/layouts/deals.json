@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_layouts_deals",
+  "info": {
+    "displayName": "Deals"
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "Description": {
+      "type": "string"
+    },
+    "Badge": {
+      "type": "string"
+    },
+    "Link": {
+      "type": "component",
+      "component": "components.link",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}
