@@ -17,6 +17,20 @@
     "isExternal": {
       "type": "boolean",
       "default": false
+    },
+    "isButton": {
+      "type": "boolean"
+    },
+    "Variant": {
+      "type": "enumeration",
+      "enum": [
+        "None",
+        "Primary",
+        "Secondary",
+        "Outline",
+        "Ghost",
+        "Underline"
+      ]
     }
   },
   "config": {}

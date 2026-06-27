@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_layouts_heroes",
+  "info": {
+    "displayName": "Hero"
+  },
+  "options": {},
+  "attributes": {
+    "Hero": {
+      "type": "component",
+      "component": "contents.hero-contents",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

@@ -1,0 +1,54 @@
+{
+  "collectionName": "components_contents_hero_contents",
+  "info": {
+    "displayName": "HeroContents"
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "Description": {
+      "type": "string"
+    },
+    "Badge": {
+      "type": "string"
+    },
+    "Icon": {
+      "type": "enumeration",
+      "enum": [
+        "Bread",
+        "Fish"
+      ]
+    },
+    "Image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Color": {
+      "type": "enumeration",
+      "enum": [
+        "Black",
+        "Blue",
+        "Brown",
+        "Green",
+        "Orange",
+        "Red",
+        "Yellow",
+        "White"
+      ]
+    },
+    "isPrimary": {
+      "type": "boolean"
+    },
+    "Link": {
+      "type": "component",
+      "component": "components.link",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

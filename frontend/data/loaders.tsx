@@ -11,7 +11,7 @@ export function blocksToText(blocks: unknown[]): string {
 
 // --- Strapi base types ---
 
-interface StrapiMedia {
+export interface StrapiMedia {
   id: number;
   url: string;
   alternativeText: string | null;
@@ -81,6 +81,61 @@ export interface Global {
 interface StrapiResponse<T> {
   data: T;
   meta: Record<string, unknown>;
+}
+
+// --- Hero types ---
+
+export type HeroIconEnum = 'Bread' | 'Fish'
+export type HeroColorEnum = 'Black' | 'Blue' | 'Brown' | 'Green' | 'Orange' | 'Red' | 'Yellow' | 'White'
+
+export interface HeroLink {
+  id: number;
+  Text: string;
+  Url: string;
+  isButton: boolean | null;
+  isExternal: boolean;
+  Variant: 'None' | 'Primary' | 'Secondary' | 'Outline' | 'Ghost' | 'Underline' | null;
+}
+
+export interface HeroContent {
+  id: number;
+  Title: string | null;
+  Description: string | null;
+  Badge: string | null;
+  Icon: HeroIconEnum | null;
+  Image: StrapiMedia | null;
+  Color: HeroColorEnum | null;
+  isPrimary: boolean | null;
+  Link: HeroLink[];
+}
+
+interface LayoutsHeroBlock {
+  __component: 'layouts.hero';
+  id: number;
+  Hero: HeroContent[];
+}
+
+interface Homepage {
+  Title: string | null;
+  Description: string | null;
+  Blocks: LayoutsHeroBlock[];
+}
+
+export async function getHomePage(): Promise<Homepage | null> {
+  try {
+    const params = new URLSearchParams({
+      'populate[Blocks][on][layouts.hero][populate][Hero][populate][Image]': 'true',
+      'populate[Blocks][on][layouts.hero][populate][Hero][populate][Link]': 'true',
+    });
+    const res = await fetch(`${getStrapiURL()}/api/homepage?${params}`, {
+      cache: 'no-store',
+    });
+    if (!res.ok) return null;
+    const json: StrapiResponse<Homepage> = await res.json();
+    return json.data;
+  } catch {
+    return null;
+  }
 }
 
 export async function getGlobal(): Promise<Global | null> {

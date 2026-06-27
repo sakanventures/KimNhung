@@ -19,9 +19,13 @@ export interface ComponentsLink extends Struct.ComponentSchema {
   };
   attributes: {
     Description: Schema.Attribute.String;
+    isButton: Schema.Attribute.Boolean;
     isExternal: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     Text: Schema.Attribute.String;
     Url: Schema.Attribute.String;
+    Variant: Schema.Attribute.Enumeration<
+      ['None', 'Primary', 'Secondary', 'Outline', 'Ghost', 'Underline']
+    >;
   };
 }
 
@@ -47,6 +51,25 @@ export interface ComponentsRichText extends Struct.ComponentSchema {
   };
 }
 
+export interface ContentsHeroContents extends Struct.ComponentSchema {
+  collectionName: 'components_contents_hero_contents';
+  info: {
+    displayName: 'HeroContents';
+  };
+  attributes: {
+    Badge: Schema.Attribute.String;
+    Color: Schema.Attribute.Enumeration<
+      ['Black', 'Blue', 'Brown', 'Green', 'Orange', 'Red', 'Yellow', 'White']
+    >;
+    Description: Schema.Attribute.String;
+    Icon: Schema.Attribute.Enumeration<['Bread', 'Fish']>;
+    Image: Schema.Attribute.Media<'images'>;
+    isPrimary: Schema.Attribute.Boolean;
+    Link: Schema.Attribute.Component<'components.link', true>;
+    Title: Schema.Attribute.String;
+  };
+}
+
 export interface LayoutsAnnouncement extends Struct.ComponentSchema {
   collectionName: 'components_layouts_announcements';
   info: {
@@ -54,6 +77,16 @@ export interface LayoutsAnnouncement extends Struct.ComponentSchema {
   };
   attributes: {
     RichText: Schema.Attribute.Component<'components.rich-text', true>;
+  };
+}
+
+export interface LayoutsHero extends Struct.ComponentSchema {
+  collectionName: 'components_layouts_heroes';
+  info: {
+    displayName: 'Hero';
+  };
+  attributes: {
+    Hero: Schema.Attribute.Component<'contents.hero-contents', true>;
   };
 }
 
@@ -84,7 +117,9 @@ declare module '@strapi/strapi' {
       'components.link': ComponentsLink;
       'components.logo-text': ComponentsLogoText;
       'components.rich-text': ComponentsRichText;
+      'contents.hero-contents': ContentsHeroContents;
       'layouts.announcement': LayoutsAnnouncement;
+      'layouts.hero': LayoutsHero;
       'layouts.nav-bar': LayoutsNavBar;
       'layouts.utility': LayoutsUtility;
     }

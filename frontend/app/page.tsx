@@ -1,4 +1,4 @@
-import { getGlobal, blocksToText } from '@/data/loaders'
+import { getGlobal, getHomePage, blocksToText } from '@/data/loaders'
 import { getStrapiMedia } from '@/lib/utils'
 import { SiteHeader } from '@/components/site-header'
 import { AnnouncementBar } from '@/components/announcement-bar'
@@ -14,7 +14,9 @@ import { Visit } from '@/components/visit'
 import { SiteFooter } from '@/components/site-footer'
 
 export default async function Page() {
-  const global = await getGlobal()
+  const [global, homepage] = await Promise.all([getGlobal(), getHomePage()])
+  const heroBlock = homepage?.Blocks?.find(b => b.__component === 'layouts.hero')
+  const heroData = heroBlock?.Hero
 
 const announcementItems = global?.Announcement?.RichText
     .map((entry) => blocksToText(entry.RichText))
@@ -41,7 +43,7 @@ const announcementItems = global?.Announcement?.RichText
         logoTitle={logoTitle}
       />
       <main>
-        <Hero />
+        <Hero heroData={heroData} />
         <ShopByDepartment />
         <WeeklySpecials />
         <Departments />
