@@ -81,7 +81,7 @@ const announcementItems = global?.Announcement?.RichText
         <Community posts={communityPosts} />
         <Newsletter data={newsletterBlock} />
       </main>
-      <SiteFooter footer={global?.Footer ?? null} />
+      <SiteFooter footer={global?.Footer ?? null} subFooter={global?.SubFooter ?? null} />
     </>
   )
 }

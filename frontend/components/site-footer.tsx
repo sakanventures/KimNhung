@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslation } from '@/lib/i18n'
-import type { Footer, SocialEnum } from '@/data/loaders'
+import type { Footer, SubFooter, SocialEnum } from '@/data/loaders'
 
 function SiFacebook({ className }: { className?: string }) {
   return (
@@ -62,11 +62,16 @@ const SOCIAL_ICONS: Record<SocialEnum, React.ComponentType<{ className?: string 
 
 interface SiteFooterProps {
   footer?: Footer | null
+  subFooter?: SubFooter[] | null
 }
 
-export function SiteFooter({ footer }: SiteFooterProps) {
+export function SiteFooter({ footer, subFooter }: SiteFooterProps) {
   const { t } = useTranslation()
   const f = t.footer
+
+  const subFooterTexts = subFooter?.[0]?.Text ?? []
+  const leftItems = subFooterTexts.filter((item) => item.isLeft === true)
+  const rightItems = subFooterTexts.filter((item) => item.isLeft !== true)
 
   const socialLinks = footer?.Social?.[0]?.Link ?? []
   const subLinks = footer?.SubLink ?? []
@@ -146,12 +151,30 @@ export function SiteFooter({ footer }: SiteFooterProps) {
         </div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 sm:flex-row">
-          <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} Kim Nhung Superfood. {f.rightsReserved}
-          </p>
-          <p className="text-xs text-muted-foreground">
-            {f.location}
-          </p>
+          <div className="flex flex-col gap-1 sm:flex-row sm:gap-4">
+            {leftItems.length > 0 ? leftItems.map((item) => (
+              <p key={item.id} className="text-xs text-muted-foreground">
+                &copy; {new Date().getFullYear()} {item.Text}
+              </p>
+            )) : (
+              <p className="text-xs text-muted-foreground">
+                &copy; {new Date().getFullYear()} Kim Nhung Superfood. {f.rightsReserved}
+              </p>
+            )}
+          </div>
+          <div className="flex flex-col gap-1 sm:flex-row sm:gap-4 sm:text-right">
+            {rightItems.length > 0 ? rightItems.map((item) => (
+              <p key={item.id} className="text-xs text-muted-foreground">
+                {item.Description ? (
+                  <a href={item.Description} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                    {item.Text}
+                  </a>
+                ) : item.Text}
+              </p>
+            )) : (
+              <p className="text-xs text-muted-foreground">{f.location}</p>
+            )}
+          </div>
         </div>
       </div>
     </footer>

@@ -66,6 +66,19 @@ interface NavBar {
 
 export type SocialEnum = 'Facebook' | 'Instagram' | 'LinkedIn' | 'TikTok' | 'X' | 'YouTube'
 
+export interface SubFooterText {
+  id: number;
+  Text: string | null;
+  Description: string | null;
+  Icon: 'Clock' | 'Pin' | 'Phone' | null;
+  isLeft: boolean | null;
+}
+
+export interface SubFooter {
+  id: number;
+  Text: SubFooterText[];
+}
+
 export interface FooterLink {
   id: number;
   Title: string;
@@ -105,6 +118,7 @@ export interface Global {
   Utility: Utility | null;
   NavBar: NavBar | null;
   Footer: Footer | null;
+  SubFooter: SubFooter[] | null;
 }
 
 interface StrapiResponse<T> {
@@ -339,6 +353,7 @@ export async function getGlobal(): Promise<Global | null> {
       'populate[Announcement][populate][RichText]': 'true',
       'populate[Logo]': 'true',
       'populate[Icon]': 'true',
+      'populate[SubFooter][populate][Text]': 'true',
       'populate[Footer][populate][Social][populate][Link]': 'true',
       'populate[Footer][populate][SubLink][populate][Link]': 'true',
     });

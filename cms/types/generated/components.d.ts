@@ -317,6 +317,16 @@ export interface LayoutsStory extends Struct.ComponentSchema {
   };
 }
 
+export interface LayoutsSubFooter extends Struct.ComponentSchema {
+  collectionName: 'components_layouts_sub_footers';
+  info: {
+    displayName: 'SubFooter';
+  };
+  attributes: {
+    Text: Schema.Attribute.Component<'components.icon-text', true>;
+  };
+}
+
 export interface LayoutsUtility extends Struct.ComponentSchema {
   collectionName: 'components_layouts_utilities';
   info: {
@@ -356,6 +366,7 @@ declare module '@strapi/strapi' {
       'layouts.newsletter': LayoutsNewsletter;
       'layouts.showcase': LayoutsShowcase;
       'layouts.story': LayoutsStory;
+      'layouts.sub-footer': LayoutsSubFooter;
       'layouts.utility': LayoutsUtility;
     }
   }

@@ -50,6 +50,11 @@
       "type": "component",
       "component": "layouts.footer",
       "repeatable": false
+    },
+    "SubFooter": {
+      "type": "component",
+      "component": "layouts.sub-footer",
+      "repeatable": true
     }
   }
 }

@@ -501,6 +501,7 @@ export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
     Logo: Schema.Attribute.Media<'images'>;
     NavBar: Schema.Attribute.Component<'layouts.nav-bar', false>;
     publishedAt: Schema.Attribute.DateTime;
+    SubFooter: Schema.Attribute.Component<'layouts.sub-footer', true>;
     Title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &

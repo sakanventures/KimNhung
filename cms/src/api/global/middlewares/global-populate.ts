@@ -39,6 +39,11 @@ const globalPopulate: Core.MiddlewareHandler = async (ctx, next) => {
         },
       },
     },
+    SubFooter: {
+      populate: {
+        Text: true,
+      },
+    },
   };
 
   await next();
