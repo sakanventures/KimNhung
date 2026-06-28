@@ -278,6 +278,11 @@ export interface NewsletterBlock {
 
 // --- Community types ---
 
+export interface CommunityCategory {
+  id: number;
+  Title: string;
+}
+
 export interface CommunityPost {
   id: number;
   documentId: string;
@@ -286,6 +291,11 @@ export interface CommunityPost {
   Description: string | null;
   isFeatured: boolean;
   Thumbnail: StrapiMedia | null;
+  Wallpaper: StrapiMedia | null;
+  publishedAt: string | null;
+  createdAt: string;
+  Categories: CommunityCategory[];
+  RichText: { id: number; RichText: unknown[] }[] | null;
 }
 
 type HomepageBlock = LayoutsHeroBlock | ShowcaseBlock | DealsBlock | StoryBlock | EateryBlock | MapBlock | NewsletterBlock;
@@ -329,7 +339,26 @@ export async function getCommunityPosts(): Promise<CommunityPost[]> {
   try {
     const params = new URLSearchParams({
       'populate[Thumbnail]': 'true',
-      'filters[isFeatured][$eq]': 'true',
+      'sort[0]': 'isFeatured:desc',
+      'sort[1]': 'createdAt:desc',
+    });
+    const res = await fetch(`${getStrapiURL()}/api/communities?${params}`, {
+      cache: 'no-store',
+    });
+    if (!res.ok) return [];
+    const json: StrapiResponse<CommunityPost[]> = await res.json();
+    return json.data ?? [];
+  } catch {
+    return [];
+  }
+}
+
+export async function getAllCommunityPosts(): Promise<CommunityPost[]> {
+  try {
+    const params = new URLSearchParams({
+      'populate[Thumbnail]': 'true',
+      'populate[Wallpaper]': 'true',
+      'populate[Categories]': 'true',
       'sort': 'createdAt:desc',
     });
     const res = await fetch(`${getStrapiURL()}/api/communities?${params}`, {
@@ -340,6 +369,53 @@ export async function getCommunityPosts(): Promise<CommunityPost[]> {
     return json.data ?? [];
   } catch {
     return [];
+  }
+}
+
+export async function getCommunityPostBySlug(slug: string): Promise<CommunityPost | null> {
+  try {
+    const params = new URLSearchParams({
+      'populate[Thumbnail]': 'true',
+      'populate[Wallpaper]': 'true',
+      'populate[Categories]': 'true',
+      'populate[RichText]': 'true',
+      'filters[Slug][$eq]': slug,
+    });
+    const res = await fetch(`${getStrapiURL()}/api/communities?${params}`, {
+      cache: 'no-store',
+    });
+    if (!res.ok) return null;
+    const json: StrapiResponse<CommunityPost[]> = await res.json();
+    return json.data?.[0] ?? null;
+  } catch {
+    return null;
+  }
+}
+
+// --- Index (community page header) types ---
+
+export interface IndexInfo {
+  id: number;
+  Title: string | null;
+  Description: string | null;
+  Badge: string | null;
+}
+
+export interface IndexPage {
+  Info: IndexInfo[];
+}
+
+export async function getIndexPage(): Promise<IndexPage | null> {
+  try {
+    const params = new URLSearchParams({ 'populate[Info]': 'true' });
+    const res = await fetch(`${getStrapiURL()}/api/index?${params}`, {
+      cache: 'no-store',
+    });
+    if (!res.ok) return null;
+    const json: StrapiResponse<IndexPage> = await res.json();
+    return json.data;
+  } catch {
+    return null;
   }
 }
 

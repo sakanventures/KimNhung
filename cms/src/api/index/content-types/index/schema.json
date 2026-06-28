@@ -1,0 +1,20 @@
+{
+  "kind": "singleType",
+  "collectionName": "indexes",
+  "info": {
+    "singularName": "index",
+    "pluralName": "indexes",
+    "displayName": "Index"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Info": {
+      "type": "component",
+      "component": "components.information",
+      "repeatable": true
+    }
+  }
+}

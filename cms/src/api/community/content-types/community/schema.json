@@ -41,6 +41,17 @@
       "allowedTypes": [
         "images"
       ]
+    },
+    "Categories": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::category.category",
+      "mappedBy": "Communities"
+    },
+    "RichText": {
+      "type": "component",
+      "component": "components.rich-text",
+      "repeatable": true
     }
   }
 }
