@@ -215,6 +215,24 @@ export interface MapBlock {
   Map: MapContents | null;
 }
 
+// --- Newsletter types ---
+
+// NewsletterInfo is used only internally via NewsletterBlock
+export interface NewsletterInfo {
+  id: number;
+  Title: string | null;
+  Description: string | null;
+  Badge: string | null;
+}
+
+export interface NewsletterBlock {
+  __component: 'layouts.newsletter';
+  id: number;
+  Info: NewsletterInfo[];
+  Image: StrapiMedia | null;
+  Text: ShortText[];
+}
+
 // --- Community types ---
 
 export interface CommunityPost {
@@ -227,7 +245,7 @@ export interface CommunityPost {
   Thumbnail: StrapiMedia | null;
 }
 
-type HomepageBlock = LayoutsHeroBlock | ShowcaseBlock | DealsBlock | StoryBlock | EateryBlock | MapBlock;
+type HomepageBlock = LayoutsHeroBlock | ShowcaseBlock | DealsBlock | StoryBlock | EateryBlock | MapBlock | NewsletterBlock;
 
 interface Homepage {
   Title: string | null;
@@ -249,6 +267,9 @@ export async function getHomePage(): Promise<Homepage | null> {
       'populate[Blocks][on][layouts.story][populate][Bulletin][populate][Text]': 'true',
       'populate[Blocks][on][layouts.eatery][populate][Info]': 'true',
       'populate[Blocks][on][layouts.map][populate][Map][populate][Aisle][populate][Image]': 'true',
+      'populate[Blocks][on][layouts.newsletter][populate][Info]': 'true',
+      'populate[Blocks][on][layouts.newsletter][populate][Image]': 'true',
+      'populate[Blocks][on][layouts.newsletter][populate][Text]': 'true',
     });
     const res = await fetch(`${getStrapiURL()}/api/homepage?${params}`, {
       cache: 'no-store',

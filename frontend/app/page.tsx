@@ -1,4 +1,4 @@
-import { getGlobal, getHomePage, getCommunityPosts, blocksToText, type ShowcaseBlock, type DealsBlock, type StoryBlock, type EateryBlock, type MapBlock } from '@/data/loaders'
+import { getGlobal, getHomePage, getCommunityPosts, blocksToText, type ShowcaseBlock, type DealsBlock, type StoryBlock, type EateryBlock, type MapBlock, type NewsletterBlock } from '@/data/loaders'
 import { getStrapiMedia } from '@/lib/utils'
 import { getSaleProducts } from '@/lib/medusa/products'
 import { SiteHeader } from '@/components/site-header'
@@ -44,6 +44,10 @@ export default async function Page() {
     (b): b is MapBlock => b.__component === 'layouts.map'
   )
 
+  const newsletterBlock = homepage?.Blocks?.find(
+    (b): b is NewsletterBlock => b.__component === 'layouts.newsletter'
+  )
+
 const announcementItems = global?.Announcement?.RichText
     .map((entry) => blocksToText(entry.RichText))
     .filter((s) => s.length > 0)
@@ -76,7 +80,7 @@ const announcementItems = global?.Announcement?.RichText
         <FoodHall eateryData={eateryBlock} />
         <Story storyData={storyBlock} />
         <Community posts={communityPosts} />
-        <Newsletter />
+        <Newsletter data={newsletterBlock} />
         <Visit />
       </main>
       <SiteFooter />

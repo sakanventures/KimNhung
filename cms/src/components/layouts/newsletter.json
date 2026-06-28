@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_layouts_newsletters",
+  "info": {
+    "displayName": "Newsletter"
+  },
+  "options": {},
+  "attributes": {
+    "Info": {
+      "type": "component",
+      "component": "components.information",
+      "repeatable": true
+    },
+    "Image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Text": {
+      "type": "component",
+      "component": "components.short-text",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

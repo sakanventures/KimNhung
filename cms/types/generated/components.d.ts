@@ -232,6 +232,18 @@ export interface LayoutsNavBar extends Struct.ComponentSchema {
   };
 }
 
+export interface LayoutsNewsletter extends Struct.ComponentSchema {
+  collectionName: 'components_layouts_newsletters';
+  info: {
+    displayName: 'Newsletter';
+  };
+  attributes: {
+    Image: Schema.Attribute.Media<'images'>;
+    Info: Schema.Attribute.Component<'components.information', true>;
+    Text: Schema.Attribute.Component<'components.short-text', true>;
+  };
+}
+
 export interface LayoutsShowcase extends Struct.ComponentSchema {
   collectionName: 'components_layouts_showcases';
   info: {
@@ -288,6 +300,7 @@ declare module '@strapi/strapi' {
       'layouts.hero': LayoutsHero;
       'layouts.map': LayoutsMap;
       'layouts.nav-bar': LayoutsNavBar;
+      'layouts.newsletter': LayoutsNewsletter;
       'layouts.showcase': LayoutsShowcase;
       'layouts.story': LayoutsStory;
       'layouts.utility': LayoutsUtility;

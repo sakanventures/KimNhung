@@ -3,12 +3,25 @@
 import { useState } from 'react'
 import { Mail, Check } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n'
+import { getStrapiMedia } from '@/lib/utils'
+import type { NewsletterBlock } from '@/data/loaders'
 
-export function Newsletter() {
+interface Props {
+  data?: NewsletterBlock | null
+}
+
+export function Newsletter({ data }: Props) {
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const { t } = useTranslation()
   const n = t.newsletter
+
+  const info = data?.Info?.[0]
+  const badge = info?.Badge ?? n.eyebrow
+  const title = info?.Title ?? n.title
+  const description = info?.Description ?? n.body
+  const disclaimer = data?.Text?.[0]?.Text ?? n.disclaimer
+  const imageUrl = data?.Image?.url ? getStrapiMedia(data.Image.url) : null
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -24,13 +37,13 @@ export function Newsletter() {
             <div className="flex flex-col justify-center p-8 sm:p-12">
               <span className="inline-flex w-fit items-center gap-2 rounded-full bg-leaf/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-leaf">
                 <Mail className="size-3.5" />
-                {n.eyebrow}
+                {badge}
               </span>
               <h2 className="mt-4 text-balance font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-                {n.title}
+                {title}
               </h2>
               <p className="mt-3 text-pretty leading-relaxed text-muted-foreground">
-                {n.body}
+                {description}
               </p>
 
               {submitted ? (
@@ -64,14 +77,14 @@ export function Newsletter() {
                 </form>
               )}
               <p className="mt-3 text-xs text-muted-foreground">
-                {n.disclaimer}
+                {disclaimer}
               </p>
             </div>
 
             <div className="relative min-h-64 lg:min-h-full">
               <img
-                src="/placeholder.svg?height=640&width=640&query=colorful%20asian%20groceries%20snacks%20flat%20lay%20vibrant"
-                alt="A colorful spread of Asian groceries and snacks"
+                src={imageUrl ?? '/placeholder.svg?height=640&width=640&query=colorful%20asian%20groceries%20snacks%20flat%20lay%20vibrant'}
+                alt={data?.Image?.alternativeText ?? 'A colorful spread of Asian groceries and snacks'}
                 className="absolute inset-0 h-full w-full object-cover"
               />
             </div>
