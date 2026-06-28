@@ -31,7 +31,7 @@ export function Community({ posts }: Props) {
         </div>
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {posts.map((post) => {
+          {posts.slice(0, 3).map((post) => {
             const imageUrl = getStrapiMedia(post.Thumbnail?.url ?? null) ?? '/placeholder.svg'
             return (
               <article

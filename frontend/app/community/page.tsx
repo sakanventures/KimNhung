@@ -5,6 +5,7 @@ import { getIndexPage, getGlobal, getAllCommunityPosts } from '@/data/loaders'
 import { getStrapiMedia } from '@/lib/utils'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
+import { Pagination } from '@/components/pagination'
 
 export const metadata: Metadata = {
   title: 'Community',
@@ -33,15 +34,24 @@ function formatDate(iso: string) {
   })
 }
 
-export default async function CommunityIndexPage() {
-  const [indexPage, global, posts] = await Promise.all([
+export default async function CommunityIndexPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>
+}) {
+  const { page: pageParam } = await searchParams
+  const page = Math.max(1, parseInt(pageParam ?? '1', 10) || 1)
+
+  const [indexPage, global, { data: posts, pagination }] = await Promise.all([
     getIndexPage(),
     getGlobal(),
-    getAllCommunityPosts(),
+    getAllCommunityPosts(page, 5),
   ])
 
   const info = indexPage?.Info?.[0]
-  const [featured, ...rest] = posts
+  const isFirstPage = page === 1
+  const featured = isFirstPage ? (posts.find((p) => p.isFeatured) ?? posts[0]) : null
+  const rest = featured ? posts.filter((p) => p !== featured) : posts
 
   const utilityItems = global?.Utility?.Text
   const logoUrl = getStrapiMedia(global?.NavBar?.LogoText?.Logo?.url ?? null) ?? undefined
@@ -173,6 +183,8 @@ export default async function CommunityIndexPage() {
               </div>
             </>
           )}
+
+          <Pagination page={page} pageCount={pagination.pageCount} />
         </div>
       </main>
       <SiteFooter footer={global?.Footer ?? null} subFooter={global?.SubFooter ?? null} />

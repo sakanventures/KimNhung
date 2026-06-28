@@ -43,7 +43,7 @@ function Inline({ node }: { node: InlineNode }) {
   return <Fragment>{text}</Fragment>
 }
 
-function Block({ node }: { node: BlockNode }) {
+function Block({ node, isRecipe }: { node: BlockNode; isRecipe?: boolean }) {
   const children = node.children?.map((c, i) => <Inline key={i} node={c} />)
   switch (node.type) {
     case 'heading': {
@@ -55,6 +55,18 @@ function Block({ node }: { node: BlockNode }) {
     case 'quote': return <blockquote>{children}</blockquote>
     case 'code': return <pre><code>{children}</code></pre>
     case 'list': {
+      if (isRecipe && node.format !== 'ordered') {
+        return (
+          <div className="my-5 grid grid-cols-2 gap-x-8 gap-y-2">
+            {node.children?.map((item, i) => (
+              <div key={i} className="flex items-start gap-2 text-sm text-foreground/80">
+                <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary" />
+                <span>{item.children?.map((c, j) => <Inline key={j} node={c} />)}</span>
+              </div>
+            ))}
+          </div>
+        )
+      }
       const Tag = node.format === 'ordered' ? 'ol' : 'ul'
       return <Tag>{node.children?.map((item, i) => <li key={i}>{item.children?.map((c, j) => <Inline key={j} node={c} />)}</li>)}</Tag>
     }
@@ -63,8 +75,8 @@ function Block({ node }: { node: BlockNode }) {
   }
 }
 
-function RichTextBlocks({ blocks }: { blocks: unknown[] }) {
-  return <>{(blocks as BlockNode[]).map((b, i) => <Block key={i} node={b} />)}</>
+function RichTextBlocks({ blocks, isRecipe }: { blocks: unknown[]; isRecipe?: boolean }) {
+  return <>{(blocks as BlockNode[]).map((b, i) => <Block key={i} node={b} isRecipe={isRecipe} />)}</>
 }
 
 type Props = { params: Promise<{ slug: string }> }
@@ -86,7 +98,7 @@ function formatDate(iso: string) {
 }
 
 export async function generateStaticParams() {
-  const posts = await getAllCommunityPosts()
+  const { data: posts } = await getAllCommunityPosts(1, 100)
   return posts.map((p) => ({ slug: p.Slug }))
 }
 
@@ -109,9 +121,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CommunityDetailPage({ params }: Props) {
   const { slug } = await params
-  const [post, allPosts, global] = await Promise.all([
+  const [post, { data: allPosts }, global] = await Promise.all([
     getCommunityPostBySlug(slug),
-    getAllCommunityPosts(),
+    getAllCommunityPosts(1, 10),
     getGlobal(),
   ])
   if (!post) notFound()
@@ -183,23 +195,8 @@ export default async function CommunityDetailPage({ params }: Props) {
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-12 lg:flex-row">
             {/* Article */}
-            <article className="min-w-0 flex-1 max-w-none
-              [&_h1]:mt-0 [&_h1]:mb-6 [&_h1]:font-heading [&_h1]:text-3xl [&_h1]:font-semibold [&_h1]:tracking-tight [&_h1]:text-foreground
-              [&_h2]:mt-10 [&_h2]:mb-4 [&_h2]:font-heading [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:tracking-tight [&_h2]:text-foreground
-              [&_h3]:mt-8 [&_h3]:mb-3 [&_h3]:font-heading [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:tracking-tight [&_h3]:text-foreground
-              [&_h4]:mt-6 [&_h4]:mb-2 [&_h4]:font-heading [&_h4]:text-lg [&_h4]:font-semibold [&_h4]:text-foreground
-              [&_p]:mb-5 [&_p]:leading-relaxed [&_p]:text-foreground/80
-              [&_ul]:mb-5 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:text-foreground/80
-              [&_ol]:mb-5 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:text-foreground/80
-              [&_li]:mb-1.5 [&_li]:leading-relaxed
-              [&_blockquote]:my-6 [&_blockquote]:border-l-4 [&_blockquote]:border-primary [&_blockquote]:pl-5 [&_blockquote]:italic [&_blockquote]:text-muted-foreground
-              [&_pre]:my-6 [&_pre]:overflow-x-auto [&_pre]:rounded-xl [&_pre]:bg-muted [&_pre]:p-4 [&_pre]:text-sm
-              [&_code]:rounded [&_code]:bg-muted [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-sm [&_code]:font-mono
-              [&_img]:my-8 [&_img]:w-full [&_img]:rounded-2xl [&_img]:shadow-md
-              [&_a]:text-primary [&_a]:underline-offset-2 hover:[&_a]:underline
-              [&_strong]:font-semibold [&_strong]:text-foreground"
-            >
-              {richBlocks.length > 0 && <RichTextBlocks blocks={richBlocks} />}
+            <article className="richtext min-w-0 flex-1">
+              {richBlocks.length > 0 && <RichTextBlocks blocks={richBlocks} isRecipe={cat === 'Recipes'} />}
             </article>
 
             {/* Sidebar */}

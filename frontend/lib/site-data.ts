@@ -183,7 +183,10 @@ export type BlogPost = {
   author: string
   authorRole: string
   coverImage: string
-  body: { type: 'p' | 'h2' | 'h3' | 'img' | 'blockquote'; content: string }[]
+  body: (
+    | { type: 'p' | 'h2' | 'h3' | 'img' | 'blockquote'; content: string }
+    | { type: 'ul'; content: string[] }
+  )[]
 }
 
 export const BLOG_POSTS: BlogPost[] = [
@@ -324,6 +327,59 @@ export const BLOG_POSTS: BlogPost[] = [
       { type: 'p', content: 'Korean sunscreens have a different texture from Western ones — lighter, less white-cast, often worn instead of moisturizer. SPF 50+ PA++++ is standard. Brands to look for: Beauty of Joseon, Skin Aqua, Anessa. This is the one product the entire K-beauty community agrees on: use it every day, not just at the beach.' },
       { type: 'blockquote', content: '"Sunscreen is the one anti-aging product that actually works. Everything else in the routine supports it." — Jenny, Beauty Dept' },
       { type: 'p', content: 'Come in and talk to our team. We can walk you through what we personally use and what has worked for customers with similar skin types. No upselling — just honest advice.' },
+    ],
+  },
+  {
+    slug: 'bun-bo-hue-recipe',
+    title: 'Bún Bò Huế: The Spicy Noodle Soup Worth the Effort',
+    excerpt:
+      'Richer than phở and built on a lemongrass-shrimp paste broth, bún bò Huế is central Vietnam at its best. Here is the full recipe our kitchen team has been making for years.',
+    category: 'Recipes',
+    categoryColor: 'bg-tangerine/15 text-tangerine',
+    date: 'March 15, 2025',
+    readingTime: '10 min read',
+    author: 'Huong Le',
+    authorRole: 'Kitchen & Prepared Foods',
+    coverImage: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=1200&h=630&fit=crop&auto=format',
+    body: [
+      { type: 'p', content: 'Bún bò Huế is a dish that rewards patience. The broth takes hours, the aromatics are layered one at a time, and the final bowl is nothing like what you get when you rush it. But once you have made it properly, no shortcut will satisfy you. This is the version our kitchen team has been making for years — built from the same ingredients you can find in our store.' },
+      { type: 'h2', content: 'Ingredients' },
+      {
+        type: 'ul',
+        content: [
+          '2 lb beef shank',
+          '2 lb oxtail',
+          '2 lb pork hocks',
+          '1 lb pork sausage chả Lua',
+          '1 lb block of pork blood',
+          '24 oz chicken broth',
+          '12 stalks lemongrass, leafy tops removed, roots smashed',
+          '2 yellow onions, large, halved (removed after cooking)',
+          '3 tbsp salt',
+          '2 tbsp sugar',
+          '2 tbsp shrimp paste, Lee Kum Kee brand',
+          '3–4 tbsp fish sauce',
+          '3 tbsp annatto oil',
+          '2 tbsp fried shallot, sliced',
+          '2 tbsp fried garlic, minced',
+          'Mint',
+          'Thai basil',
+          'Bean sprouts',
+          'Lime, sliced',
+          '1 pack dried rice noodles, medium or large thickness (look for "Bún Bò Huế" on the label)',
+        ],
+      },
+      { type: 'h2', content: 'Build the broth' },
+      { type: 'p', content: 'Blanch the beef shank, oxtail, and pork hocks in boiling water for 5 minutes, then rinse under cold water. This pulls out the impurities that would make the broth cloudy. Transfer to a large pot, cover with fresh water, and bring to a simmer.' },
+      { type: 'p', content: 'Add the chicken broth, lemongrass, and halved onions. Simmer uncovered for at least 2 hours — 3 is better. Skim the surface every 30 minutes. The broth should stay at a low, rolling simmer, never a full boil.' },
+      { type: 'h2', content: 'The spice base' },
+      { type: 'p', content: 'In a small pan, heat the annatto oil over medium. Add the fried shallot and garlic and cook for 1 minute until fragrant. Stir in the shrimp paste and cook for another 2 minutes. Add this entire mixture to the broth along with salt, sugar, and fish sauce. Taste and adjust — the broth should be savory, slightly funky, faintly sweet, and brick-orange in color.' },
+      { type: 'img', content: 'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=1100&h=600&fit=crop&auto=format' },
+      { type: 'h2', content: 'Prepare the garnishes and noodles' },
+      { type: 'p', content: 'Soak the dried rice noodles per the package instructions — usually 20 minutes in warm water, then 2 minutes in boiling water until just tender. Rinse under cold water and set aside in individual portions. Slice the chả lụa into rounds. Cut the pork blood into 1-inch cubes and simmer in the broth for 10 minutes before serving.' },
+      { type: 'blockquote', content: '"The shrimp paste is non-negotiable. A lot of people skip it or use too little because of the smell. Do not. That is where the depth comes from." — Huong, Kitchen Team' },
+      { type: 'h2', content: 'Assembly' },
+      { type: 'p', content: 'Add a portion of noodles to each bowl. Arrange beef shank slices, oxtail pieces, chả lụa rounds, and a cube or two of pork blood on top. Ladle the hot broth over everything. Serve with bean sprouts, mint, Thai basil, and lime on the side. A drizzle of chili oil or sliced fresh chili finishes the bowl.' },
     ],
   },
 ]

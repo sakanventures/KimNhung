@@ -353,22 +353,47 @@ export async function getCommunityPosts(): Promise<CommunityPost[]> {
   }
 }
 
-export async function getAllCommunityPosts(): Promise<CommunityPost[]> {
+export interface PaginationMeta {
+  page: number;
+  pageSize: number;
+  pageCount: number;
+  total: number;
+}
+
+export interface PaginatedCommunityPosts {
+  data: CommunityPost[];
+  pagination: PaginationMeta;
+}
+
+export async function getAllCommunityPosts(
+  page = 1,
+  pageSize = 9,
+): Promise<PaginatedCommunityPosts> {
+  const empty: PaginatedCommunityPosts = {
+    data: [],
+    pagination: { page, pageSize, pageCount: 0, total: 0 },
+  };
   try {
     const params = new URLSearchParams({
       'populate[Thumbnail]': 'true',
       'populate[Wallpaper]': 'true',
       'populate[Categories]': 'true',
-      'sort': 'createdAt:desc',
+      'sort[0]': 'isFeatured:desc',
+      'sort[1]': 'createdAt:desc',
+      'pagination[page]': String(page),
+      'pagination[pageSize]': String(pageSize),
     });
     const res = await fetch(`${getStrapiURL()}/api/communities?${params}`, {
       cache: 'no-store',
     });
-    if (!res.ok) return [];
-    const json: StrapiResponse<CommunityPost[]> = await res.json();
-    return json.data ?? [];
+    if (!res.ok) return empty;
+    const json = await res.json() as { data: CommunityPost[]; meta: { pagination: PaginationMeta } };
+    return {
+      data: json.data ?? [],
+      pagination: json.meta?.pagination ?? empty.pagination,
+    };
   } catch {
-    return [];
+    return empty;
   }
 }
 
