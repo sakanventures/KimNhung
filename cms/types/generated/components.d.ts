@@ -18,6 +18,7 @@ export interface ComponentsIconText extends Struct.ComponentSchema {
     displayName: 'IconText';
   };
   attributes: {
+    Description: Schema.Attribute.String;
     Icon: Schema.Attribute.Enumeration<['Clock', 'Pin', 'Phone']>;
     isLeft: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     Text: Schema.Attribute.String;
@@ -57,6 +58,9 @@ export interface ComponentsLink extends Struct.ComponentSchema {
     Description: Schema.Attribute.String;
     isButton: Schema.Attribute.Boolean;
     isExternal: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    Social: Schema.Attribute.Enumeration<
+      ['Facebook', 'Instagram', 'LinkedIn', 'TikTok', 'X', 'YouTube']
+    >;
     Title: Schema.Attribute.String;
     Url: Schema.Attribute.String;
     Variant: Schema.Attribute.Enumeration<
@@ -94,6 +98,28 @@ export interface ComponentsShortText extends Struct.ComponentSchema {
   };
   attributes: {
     Text: Schema.Attribute.String;
+  };
+}
+
+export interface ComponentsSocial extends Struct.ComponentSchema {
+  collectionName: 'components_components_socials';
+  info: {
+    displayName: 'Social';
+  };
+  attributes: {
+    Link: Schema.Attribute.Component<'components.link', true>;
+    Title: Schema.Attribute.String;
+  };
+}
+
+export interface ComponentsSubLink extends Struct.ComponentSchema {
+  collectionName: 'components_components_sub_links';
+  info: {
+    displayName: 'SubLink';
+  };
+  attributes: {
+    Link: Schema.Attribute.Component<'components.link', true>;
+    Title: Schema.Attribute.String;
   };
 }
 
@@ -202,6 +228,18 @@ export interface LayoutsEatery extends Struct.ComponentSchema {
   };
 }
 
+export interface LayoutsFooter extends Struct.ComponentSchema {
+  collectionName: 'components_layouts_footers';
+  info: {
+    displayName: 'Footer';
+  };
+  attributes: {
+    Logo: Schema.Attribute.Component<'components.logo-text', true>;
+    Social: Schema.Attribute.Component<'components.social', true>;
+    SubLink: Schema.Attribute.Component<'components.sub-link', true>;
+  };
+}
+
 export interface LayoutsHero extends Struct.ComponentSchema {
   collectionName: 'components_layouts_heroes';
   info: {
@@ -209,6 +247,17 @@ export interface LayoutsHero extends Struct.ComponentSchema {
   };
   attributes: {
     Hero: Schema.Attribute.Component<'contents.hero-contents', true>;
+  };
+}
+
+export interface LayoutsLocation extends Struct.ComponentSchema {
+  collectionName: 'components_layouts_locations';
+  info: {
+    displayName: 'Location';
+  };
+  attributes: {
+    Info: Schema.Attribute.Component<'components.information', true>;
+    Text: Schema.Attribute.Component<'components.icon-text', true>;
   };
 }
 
@@ -289,6 +338,8 @@ declare module '@strapi/strapi' {
       'components.logo-text': ComponentsLogoText;
       'components.rich-text': ComponentsRichText;
       'components.short-text': ComponentsShortText;
+      'components.social': ComponentsSocial;
+      'components.sub-link': ComponentsSubLink;
       'contents.hero-contents': ContentsHeroContents;
       'contents.map-contents': ContentsMapContents;
       'contents.showcase-contents': ContentsShowcaseContents;
@@ -297,7 +348,9 @@ declare module '@strapi/strapi' {
       'layouts.community': LayoutsCommunity;
       'layouts.deals': LayoutsDeals;
       'layouts.eatery': LayoutsEatery;
+      'layouts.footer': LayoutsFooter;
       'layouts.hero': LayoutsHero;
+      'layouts.location': LayoutsLocation;
       'layouts.map': LayoutsMap;
       'layouts.nav-bar': LayoutsNavBar;
       'layouts.newsletter': LayoutsNewsletter;

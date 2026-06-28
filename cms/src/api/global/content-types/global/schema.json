@@ -45,6 +45,11 @@
       "type": "component",
       "component": "layouts.nav-bar",
       "repeatable": false
+    },
+    "Footer": {
+      "type": "component",
+      "component": "layouts.footer",
+      "repeatable": false
     }
   }
 }

@@ -490,6 +490,7 @@ export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     Description: Schema.Attribute.String;
+    Footer: Schema.Attribute.Component<'layouts.footer', false>;
     Icon: Schema.Attribute.Media<'images'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -529,6 +530,7 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
         'layouts.story',
         'layouts.community',
         'layouts.newsletter',
+        'layouts.location',
       ]
     >;
     createdAt: Schema.Attribute.DateTime;

@@ -64,6 +64,34 @@ interface NavBar {
   LogoText: LogoText | null;
 }
 
+export type SocialEnum = 'Facebook' | 'Instagram' | 'LinkedIn' | 'TikTok' | 'X' | 'YouTube'
+
+export interface FooterLink {
+  id: number;
+  Title: string;
+  Url: string;
+  isExternal: boolean;
+  Social: SocialEnum | null;
+}
+
+export interface FooterSocial {
+  id: number;
+  Title: string | null;
+  Link: FooterLink[];
+}
+
+export interface FooterSubLink {
+  id: number;
+  Title: string | null;
+  Link: FooterLink[];
+}
+
+export interface Footer {
+  id: number;
+  Social: FooterSocial[];
+  SubLink: FooterSubLink[];
+}
+
 // --- Global type ---
 
 export interface Global {
@@ -76,6 +104,7 @@ export interface Global {
   Announcement: Announcement | null;
   Utility: Utility | null;
   NavBar: NavBar | null;
+  Footer: Footer | null;
 }
 
 interface StrapiResponse<T> {
@@ -310,6 +339,8 @@ export async function getGlobal(): Promise<Global | null> {
       'populate[Announcement][populate][RichText]': 'true',
       'populate[Logo]': 'true',
       'populate[Icon]': 'true',
+      'populate[Footer][populate][Social][populate][Link]': 'true',
+      'populate[Footer][populate][SubLink][populate][Link]': 'true',
     });
     const res = await fetch(`${getStrapiURL()}/api/global?${params}`, {
       cache: 'no-store',

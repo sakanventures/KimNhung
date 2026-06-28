@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_components_sub_links",
+  "info": {
+    "displayName": "SubLink"
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "Link": {
+      "type": "component",
+      "component": "components.link",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

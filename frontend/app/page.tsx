@@ -11,7 +11,6 @@ import { FoodHall } from '@/components/food-hall'
 import { Story } from '@/components/story'
 import { Community } from '@/components/community'
 import { Newsletter } from '@/components/newsletter'
-import { Visit } from '@/components/visit'
 import { SiteFooter } from '@/components/site-footer'
 
 export default async function Page() {
@@ -81,9 +80,8 @@ const announcementItems = global?.Announcement?.RichText
         <Story storyData={storyBlock} />
         <Community posts={communityPosts} />
         <Newsletter data={newsletterBlock} />
-        <Visit />
       </main>
-      <SiteFooter />
+      <SiteFooter footer={global?.Footer ?? null} />
     </>
   )
 }

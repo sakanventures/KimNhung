@@ -25,6 +25,20 @@ const globalPopulate: Core.MiddlewareHandler = async (ctx, next) => {
         },
       },
     },
+    Footer: {
+      populate: {
+        Social: {
+          populate: {
+            Link: true,
+          },
+        },
+        SubLink: {
+          populate: {
+            Link: true,
+          },
+        },
+      },
+    },
   };
 
   await next();

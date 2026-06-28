@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_layouts_locations",
+  "info": {
+    "displayName": "Location"
+  },
+  "options": {},
+  "attributes": {
+    "Info": {
+      "type": "component",
+      "component": "components.information",
+      "repeatable": true
+    },
+    "Text": {
+      "type": "component",
+      "component": "components.icon-text",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

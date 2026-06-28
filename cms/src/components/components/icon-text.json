@@ -8,6 +8,9 @@
     "Text": {
       "type": "string"
     },
+    "Description": {
+      "type": "string"
+    },
     "Icon": {
       "type": "enumeration",
       "enum": [

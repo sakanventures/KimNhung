@@ -31,6 +31,17 @@
         "Ghost",
         "Underline"
       ]
+    },
+    "Social": {
+      "type": "enumeration",
+      "enum": [
+        "Facebook",
+        "Instagram",
+        "LinkedIn",
+        "TikTok",
+        "X",
+        "YouTube"
+      ]
     }
   },
   "config": {}
