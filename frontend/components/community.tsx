@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useTranslation } from '@/lib/i18n'
 import { getStrapiMedia } from '@/lib/utils'
 import type { CommunityPost } from '@/data/loaders'
@@ -34,9 +35,10 @@ export function Community({ posts }: Props) {
           {posts.slice(0, 3).map((post) => {
             const imageUrl = getStrapiMedia(post.Thumbnail?.url ?? null) ?? '/placeholder.svg'
             return (
-              <article
+              <Link
                 key={post.id}
-                className="group overflow-hidden rounded-3xl border border-border bg-card"
+                href={`/community/${post.Slug}`}
+                className="group overflow-hidden rounded-3xl border border-border bg-card transition-shadow hover:shadow-lg"
               >
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
@@ -55,7 +57,7 @@ export function Community({ posts }: Props) {
                     </p>
                   )}
                 </div>
-              </article>
+              </Link>
             )
           })}
         </div>

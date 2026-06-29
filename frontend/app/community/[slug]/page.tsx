@@ -3,7 +3,9 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { Fragment } from 'react'
 import { ArrowLeft, Clock, Calendar, ArrowRight } from 'lucide-react'
+import { cookies } from 'next/headers'
 import { getAllCommunityPosts, getCommunityPostBySlug, getGlobal } from '@/data/loaders'
+import { getT } from '@/lib/server-i18n'
 import { getStrapiMedia } from '@/lib/utils'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
@@ -121,10 +123,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CommunityDetailPage({ params }: Props) {
   const { slug } = await params
+  const cookieStore = await cookies()
+  const locale = cookieStore.get('NEXT_LOCALE')?.value === 'vi' ? 'vi' : 'en'
+  const t = getT(locale)
+
   const [post, { data: allPosts }, global] = await Promise.all([
-    getCommunityPostBySlug(slug),
-    getAllCommunityPosts(1, 10),
-    getGlobal(),
+    getCommunityPostBySlug(slug, locale),
+    getAllCommunityPosts(1, 10, locale),
+    getGlobal(locale),
   ])
   if (!post) notFound()
 
@@ -143,7 +149,7 @@ export default async function CommunityDetailPage({ params }: Props) {
 
   return (
     <>
-      <SiteHeader utilityItems={utilityItems} logoUrl={logoUrl} darkLogoUrl={darkLogoUrl} logoTitle={logoTitle} />
+      <SiteHeader utilityItems={utilityItems} logoUrl={logoUrl} darkLogoUrl={darkLogoUrl} logoTitle={logoTitle} navLinks={global?.NavBar?.Link} />
       <main>
 
         {/* ── Hero ─────────────────────────────────────────────────── */}
@@ -163,7 +169,7 @@ export default async function CommunityDetailPage({ params }: Props) {
                 className="mb-5 inline-flex items-center gap-1.5 rounded-full border border-border bg-card/80 px-3.5 py-1.5 text-xs font-semibold text-foreground backdrop-blur-sm transition-colors hover:bg-card"
               >
                 <ArrowLeft className="size-3.5" />
-                All articles
+                {t.communityArticle.allArticles}
               </Link>
               <span className={`mb-3 flex w-fit items-center rounded-full px-3 py-1 text-xs font-semibold ${catColor(cat)}`}>
                 {cat ?? 'Community'}
@@ -206,7 +212,7 @@ export default async function CommunityDetailPage({ params }: Props) {
                 {headings.length > 0 && (
                   <div className="rounded-2xl border border-border bg-card p-5">
                     <p className="mb-3 text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground">
-                      In this article
+                      {t.communityArticle.inThisArticle}
                     </p>
                     <nav className="flex flex-col">
                       {headings.map((h) => (
@@ -224,7 +230,7 @@ export default async function CommunityDetailPage({ params }: Props) {
                 {/* Author */}
                 <div className="rounded-2xl border border-border bg-card p-5">
                   <p className="mb-3 text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground">
-                    Written by
+                    {t.communityArticle.writtenBy}
                   </p>
                   <div className="flex items-center gap-3">
                     <span className="flex size-11 items-center justify-center rounded-full bg-primary/10 text-base font-bold text-primary">
@@ -241,7 +247,7 @@ export default async function CommunityDetailPage({ params }: Props) {
                   className="flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
                 >
                   <ArrowLeft className="size-4" />
-                  Back to all articles
+                  {t.communityArticle.backToAllArticles}
                 </Link>
               </div>
             </aside>
@@ -254,10 +260,10 @@ export default async function CommunityDetailPage({ params }: Props) {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="mb-8 flex items-center justify-between">
                 <h2 className="font-heading text-2xl font-semibold tracking-tight text-foreground">
-                  More to read
+                  {t.communityArticle.moreToRead}
                 </h2>
                 <Link href="/community" className="flex items-center gap-1 text-sm font-semibold text-primary hover:underline">
-                  View all <ArrowRight className="size-4" />
+                  {t.communityArticle.viewAll} <ArrowRight className="size-4" />
                 </Link>
               </div>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

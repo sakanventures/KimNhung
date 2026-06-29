@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight, Clock } from 'lucide-react'
+import { cookies } from 'next/headers'
 import { getIndexPage, getGlobal, getAllCommunityPosts } from '@/data/loaders'
+import { getT } from '@/lib/server-i18n'
 import { getStrapiMedia } from '@/lib/utils'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
@@ -41,11 +43,14 @@ export default async function CommunityIndexPage({
 }) {
   const { page: pageParam } = await searchParams
   const page = Math.max(1, parseInt(pageParam ?? '1', 10) || 1)
+  const cookieStore = await cookies()
+  const locale = cookieStore.get('NEXT_LOCALE')?.value === 'vi' ? 'vi' : 'en'
+  const t = getT(locale)
 
   const [indexPage, global, { data: posts, pagination }] = await Promise.all([
-    getIndexPage(),
-    getGlobal(),
-    getAllCommunityPosts(page, 5),
+    getIndexPage(locale),
+    getGlobal(locale),
+    getAllCommunityPosts(page, 5, locale),
   ])
 
   const info = indexPage?.Info?.[0]
@@ -72,19 +77,20 @@ export default async function CommunityIndexPage({
         logoUrl={logoUrl}
         darkLogoUrl={darkLogoUrl}
         logoTitle={logoTitle}
+        navLinks={global?.NavBar?.Link}
       />
       <main>
         {/* Page header */}
         <div className="border-b border-border bg-secondary/40 py-12 lg:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <span className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">
-              {info?.Badge ?? 'From the store'}
+              {info?.Badge ?? t.communityArticle.fromTheStore}
             </span>
             <h1 className="mt-2 text-balance font-heading text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
-              {info?.Title ?? 'Stories, recipes & guides'}
+              {info?.Title ?? t.communityArticle.storiesTitle}
             </h1>
             <p className="mt-3 max-w-xl text-pretty leading-relaxed text-muted-foreground">
-              {info?.Description ?? 'Behind every aisle is a story. Our team shares recipes, cultural guides, product spotlights, and what is happening in the store.'}
+              {info?.Description ?? t.communityArticle.storiesBody}
             </p>
           </div>
         </div>
@@ -107,7 +113,7 @@ export default async function CommunityIndexPage({
               </div>
               <div className="flex flex-col justify-center p-8 lg:p-12">
                 <span className={`inline-flex w-fit rounded-full px-3 py-1 text-xs font-semibold ${catColor(featuredCategory)}`}>
-                  {featuredCategory ?? 'Community'}
+                  {featuredCategory ?? t.communityArticle.community}
                 </span>
                 <h2 className="mt-4 text-balance font-heading text-3xl font-semibold tracking-tight text-foreground lg:text-4xl">
                   {featured.Title}
@@ -131,7 +137,7 @@ export default async function CommunityIndexPage({
                     </div>
                   </div>
                   <span className="flex items-center gap-1 text-sm font-semibold text-primary transition-gap group-hover:gap-2">
-                    Read article <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                    {t.communityArticle.readArticle} <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                   </span>
                 </div>
               </div>
@@ -141,7 +147,7 @@ export default async function CommunityIndexPage({
           {/* Post grid */}
           {rest.length > 0 && (
             <>
-              <h2 className="sr-only">More articles</h2>
+              <h2 className="sr-only">{t.communityArticle.moreArticles}</h2>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                 {rest.map((post) => {
                   const cat = post.Categories?.[0]?.Title
@@ -162,7 +168,7 @@ export default async function CommunityIndexPage({
                       </div>
                       <div className="flex flex-1 flex-col p-5">
                         <span className={`inline-flex w-fit rounded-full px-2.5 py-0.5 text-xs font-semibold ${catColor(cat)}`}>
-                          {cat ?? 'Community'}
+                          {cat ?? t.communityArticle.community}
                         </span>
                         <h3 className="mt-2.5 text-balance font-heading text-base font-semibold leading-snug tracking-tight text-foreground">
                           {post.Title}

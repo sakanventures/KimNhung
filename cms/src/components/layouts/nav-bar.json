@@ -9,6 +9,11 @@
       "type": "component",
       "component": "components.logo-text",
       "repeatable": false
+    },
+    "Link": {
+      "type": "component",
+      "component": "components.link",
+      "repeatable": true
     }
   },
   "config": {}

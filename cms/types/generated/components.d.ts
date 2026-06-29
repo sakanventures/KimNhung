@@ -277,6 +277,7 @@ export interface LayoutsNavBar extends Struct.ComponentSchema {
     displayName: 'NavBar';
   };
   attributes: {
+    Link: Schema.Attribute.Component<'components.link', true>;
     LogoText: Schema.Attribute.Component<'components.logo-text', false>;
   };
 }

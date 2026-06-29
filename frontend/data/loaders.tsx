@@ -59,9 +59,17 @@ interface Utility {
   Text: IconText[];
 }
 
+export interface NavLink {
+  id: number;
+  Title: string;
+  Url: string;
+  isExternal: boolean;
+}
+
 interface NavBar {
   id: number;
   LogoText: LogoText | null;
+  Link: NavLink[];
 }
 
 export type SocialEnum = 'Facebook' | 'Instagram' | 'LinkedIn' | 'TikTok' | 'X' | 'YouTube'
@@ -306,9 +314,10 @@ interface Homepage {
   Blocks: HomepageBlock[];
 }
 
-export async function getHomePage(): Promise<Homepage | null> {
+export async function getHomePage(locale = 'en'): Promise<Homepage | null> {
   try {
     const params = new URLSearchParams({
+      locale,
       'populate[Blocks][on][layouts.hero][populate][Hero][populate][Image]': 'true',
       'populate[Blocks][on][layouts.hero][populate][Hero][populate][Link]': 'true',
       'populate[Blocks][on][layouts.showcase][populate][Link]': 'true',
@@ -335,9 +344,10 @@ export async function getHomePage(): Promise<Homepage | null> {
   }
 }
 
-export async function getCommunityPosts(): Promise<CommunityPost[]> {
+export async function getCommunityPosts(locale = 'en'): Promise<CommunityPost[]> {
   try {
     const params = new URLSearchParams({
+      locale,
       'populate[Thumbnail]': 'true',
       'sort[0]': 'isFeatured:desc',
       'sort[1]': 'createdAt:desc',
@@ -368,6 +378,7 @@ export interface PaginatedCommunityPosts {
 export async function getAllCommunityPosts(
   page = 1,
   pageSize = 9,
+  locale = 'en',
 ): Promise<PaginatedCommunityPosts> {
   const empty: PaginatedCommunityPosts = {
     data: [],
@@ -375,6 +386,7 @@ export async function getAllCommunityPosts(
   };
   try {
     const params = new URLSearchParams({
+      locale,
       'populate[Thumbnail]': 'true',
       'populate[Wallpaper]': 'true',
       'populate[Categories]': 'true',
@@ -397,9 +409,10 @@ export async function getAllCommunityPosts(
   }
 }
 
-export async function getCommunityPostBySlug(slug: string): Promise<CommunityPost | null> {
+export async function getCommunityPostBySlug(slug: string, locale = 'en'): Promise<CommunityPost | null> {
   try {
     const params = new URLSearchParams({
+      locale,
       'populate[Thumbnail]': 'true',
       'populate[Wallpaper]': 'true',
       'populate[Categories]': 'true',
@@ -411,7 +424,9 @@ export async function getCommunityPostBySlug(slug: string): Promise<CommunityPos
     });
     if (!res.ok) return null;
     const json: StrapiResponse<CommunityPost[]> = await res.json();
-    return json.data?.[0] ?? null;
+    const post = json.data?.[0] ?? null;
+    if (!post && locale !== 'en') return getCommunityPostBySlug(slug, 'en')
+    return post;
   } catch {
     return null;
   }
@@ -430,9 +445,9 @@ export interface IndexPage {
   Info: IndexInfo[];
 }
 
-export async function getIndexPage(): Promise<IndexPage | null> {
+export async function getIndexPage(locale = 'en'): Promise<IndexPage | null> {
   try {
-    const params = new URLSearchParams({ 'populate[Info]': 'true' });
+    const params = new URLSearchParams({ locale, 'populate[Info]': 'true' });
     const res = await fetch(`${getStrapiURL()}/api/index?${params}`, {
       cache: 'no-store',
     });
@@ -444,12 +459,14 @@ export async function getIndexPage(): Promise<IndexPage | null> {
   }
 }
 
-export async function getGlobal(): Promise<Global | null> {
+export async function getGlobal(locale = 'en'): Promise<Global | null> {
   try {
     const params = new URLSearchParams({
+      locale,
       'populate[NavBar][populate][LogoText][populate][Logo]': 'true',
       'populate[NavBar][populate][LogoText][populate][DarkLogo]': 'true',
       'populate[NavBar][populate][LogoText][populate][Title]': 'true',
+      'populate[NavBar][populate][Link]': 'true',
       'populate[Utility][populate][Text]': 'true',
       'populate[Announcement][populate][RichText]': 'true',
       'populate[Logo]': 'true',

@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers'
 import { getGlobal, getHomePage, getCommunityPosts, blocksToText, type ShowcaseBlock, type DealsBlock, type StoryBlock, type EateryBlock, type MapBlock, type NewsletterBlock } from '@/data/loaders'
 import { getStrapiMedia } from '@/lib/utils'
 import { getSaleProducts } from '@/lib/medusa/products'
@@ -14,11 +15,14 @@ import { Newsletter } from '@/components/newsletter'
 import { SiteFooter } from '@/components/site-footer'
 
 export default async function Page() {
+  const cookieStore = await cookies()
+  const locale = cookieStore.get('NEXT_LOCALE')?.value === 'vi' ? 'vi' : 'en'
+
   const [global, homepage, saleProducts, communityPosts] = await Promise.all([
-    getGlobal(),
-    getHomePage(),
+    getGlobal(locale),
+    getHomePage(locale),
     getSaleProducts().catch(() => []),
-    getCommunityPosts(),
+    getCommunityPosts(locale),
   ])
   const heroBlock = homepage?.Blocks?.find(b => b.__component === 'layouts.hero')
   const heroData = heroBlock?.Hero
@@ -70,6 +74,7 @@ const announcementItems = global?.Announcement?.RichText
         logoUrl={logoUrl}
         darkLogoUrl={darkLogoUrl}
         logoTitle={logoTitle}
+        navLinks={global?.NavBar?.Link}
       />
       <main>
         <Hero heroData={heroData} />

@@ -1,8 +1,9 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
+import { cookies } from 'next/headers'
 import { ThemeProvider } from '@/components/theme-provider'
-import { LanguageProvider } from '@/lib/i18n'
+import { LanguageProvider, type Lang } from '@/lib/i18n'
 import { CartProvider } from '@/lib/cart-context'
 import './globals.css'
 
@@ -59,15 +60,19 @@ export const viewport: Viewport = {
   ],
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const cookieStore = await cookies()
+  const localeCookie = cookieStore.get('NEXT_LOCALE')?.value
+  const initialLang: Lang = localeCookie === 'vi' ? 'vi' : 'en'
+
   return (
-    <html lang="en" className={`${jakarta.variable} bg-background`}>
+    <html lang={initialLang} className={`${jakarta.variable} bg-background`}>
       <body className="font-sans antialiased">
-        <LanguageProvider>
+        <LanguageProvider initialLang={initialLang}>
           <ThemeProvider>
             <CartProvider>
               {children}

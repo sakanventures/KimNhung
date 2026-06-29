@@ -179,4 +179,22 @@ export const vi: Translations = {
     facebookLabel: 'Kim Nhung Superfood trên Facebook',
     instagramLabel: 'Kim Nhung Superfood trên Instagram',
   },
+  languageToggle: {
+    switchToVietnamese: 'Chuyển sang tiếng Việt',
+    switchToEnglish: 'Chuyển sang tiếng Anh',
+  },
+  communityArticle: {
+    allArticles: 'Tất cả bài viết',
+    inThisArticle: 'Trong bài này',
+    writtenBy: 'Tác giả',
+    backToAllArticles: 'Quay lại tất cả bài viết',
+    moreToRead: 'Đọc thêm',
+    viewAll: 'Xem tất cả',
+    readArticle: 'Đọc bài viết',
+    moreArticles: 'Thêm bài viết',
+    community: 'Cộng Đồng',
+    fromTheStore: 'Từ cửa hàng',
+    storiesTitle: 'Câu chuyện, công thức & hướng dẫn',
+    storiesBody: 'Sau mỗi gian hàng là một câu chuyện. Đội ngũ của chúng tôi chia sẻ công thức nấu ăn, hướng dẫn văn hóa, giới thiệu sản phẩm và những gì đang diễn ra trong cửa hàng.',
+  },
 }

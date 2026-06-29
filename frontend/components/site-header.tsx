@@ -8,6 +8,7 @@ import { LanguageToggle } from '@/components/language-toggle'
 import { useTranslation } from '@/lib/i18n'
 import { useCart } from '@/lib/cart-context'
 import { cn } from '@/lib/utils'
+import type { NavLink } from '@/data/loaders'
 
 const ICON_MAP = {
   Pin: MapPin,
@@ -26,9 +27,10 @@ interface SiteHeaderProps {
   logoUrl?: string
   darkLogoUrl?: string
   logoTitle?: { text: string; description: string }
+  navLinks?: NavLink[]
 }
 
-export function SiteHeader({ utilityItems, logoUrl, darkLogoUrl, logoTitle }: SiteHeaderProps) {
+export function SiteHeader({ utilityItems, logoUrl, darkLogoUrl: _darkLogoUrl, logoTitle, navLinks: cmsNavLinks }: SiteHeaderProps) {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [logoError, setLogoError] = useState(false)
@@ -42,7 +44,7 @@ export function SiteHeader({ utilityItems, logoUrl, darkLogoUrl, logoTitle }: Si
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const navLinks = [
+  const fallbackNavLinks = [
     { label: t.nav.theStore, href: '/products' },
     { label: t.nav.weeklySpecials, href: '/#specials' },
     { label: t.nav.foodHall, href: '/#food-hall' },
@@ -50,6 +52,10 @@ export function SiteHeader({ utilityItems, logoUrl, darkLogoUrl, logoTitle }: Si
     { label: t.nav.community, href: '/#community' },
     { label: t.nav.visit, href: '/#visit' },
   ]
+
+  const navLinks = cmsNavLinks?.length
+    ? cmsNavLinks.map((l) => ({ label: l.Title, href: l.Url }))
+    : fallbackNavLinks
 
   return (
     <header className="sticky top-0 z-50">
@@ -238,7 +244,7 @@ export function SiteHeader({ utilityItems, logoUrl, darkLogoUrl, logoTitle }: Si
               className="mt-2 inline-flex items-center justify-center gap-1.5 rounded-full bg-primary px-4 py-3 text-base font-bold text-primary-foreground"
             >
               <MapPin className="size-4" />
-              {STORE.address}, {STORE.city}
+              {t.header.visitUs}
             </Link>
             <div className="mt-2 flex items-center justify-between rounded-lg border border-border px-3 py-3">
               <span className="text-sm font-semibold text-foreground">{t.header.darkMode}</span>
