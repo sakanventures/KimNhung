@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Menu, X, MapPin, Phone, Clock, Search, ChevronRight, ShoppingCart } from 'lucide-react'
+import { Menu, X, MapPin, Phone, Clock, ChevronRight, ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { LanguageToggle } from '@/components/language-toggle'
+import { SearchBar } from '@/components/search-bar'
 import { useTranslation } from '@/lib/i18n'
 import { useCart } from '@/lib/cart-context'
 import { cn } from '@/lib/utils'
@@ -136,19 +137,10 @@ export function SiteHeader({ utilityItems, logoUrl, darkLogoUrl: _darkLogoUrl, l
           </Link>
 
           {/* Search */}
-          <form
-            action="#specials"
-            className="relative ml-2 hidden flex-1 md:block"
-            role="search"
-          >
-            <Search className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
-            <input
-              type="search"
-              placeholder={t.header.searchPlaceholder}
-              aria-label={t.header.searchLabel}
-              className="h-11 w-full rounded-full border border-border bg-muted/60 pl-12 pr-4 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:bg-background"
-            />
-          </form>
+          <SearchBar
+            placeholder={t.header.searchPlaceholder}
+            className="ml-2 hidden flex-1 md:block"
+          />
 
           <div className="ml-auto hidden items-center gap-2 md:flex">
             <LanguageToggle />
@@ -218,15 +210,11 @@ export function SiteHeader({ utilityItems, logoUrl, darkLogoUrl: _darkLogoUrl, l
       {open && (
         <div className="border-b border-border bg-background md:hidden">
           <div className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-4 sm:px-6">
-            <form action="#specials" className="relative mb-2" role="search">
-              <Search className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
-              <input
-                type="search"
-                placeholder={t.header.searchLabel}
-                aria-label={t.header.searchLabel}
-                className="h-11 w-full rounded-full border border-border bg-muted/60 pl-12 pr-4 text-sm outline-none focus:border-primary focus:bg-background"
-              />
-            </form>
+            <SearchBar
+              placeholder={t.header.searchPlaceholder}
+              className="mb-2"
+              onNavigate={() => setOpen(false)}
+            />
             {navLinks.map((link) => (
               <Link
                 key={link.id}

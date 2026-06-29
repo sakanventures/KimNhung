@@ -5,11 +5,12 @@ import { cn } from '@/lib/utils'
 interface Props {
   page: number
   pageCount: number
+  buildHref?: (page: number) => string
 }
 
 const MAX_VISIBLE = 5
 
-export function Pagination({ page, pageCount }: Props) {
+export function Pagination({ page, pageCount, buildHref = (p) => `?page=${p}` }: Props) {
   if (pageCount <= 1) return null
 
   let start = Math.max(1, page - Math.floor(MAX_VISIBLE / 2))
@@ -23,7 +24,7 @@ export function Pagination({ page, pageCount }: Props) {
   return (
     <div className="flex items-center justify-center gap-2 pt-12">
       {page > 1 ? (
-        <Link href={`?page=${page - 1}`} aria-label="Previous page" className={cn(arrowBase, 'hover:bg-secondary')}>
+        <Link href={buildHref(page - 1)} aria-label="Previous page" className={cn(arrowBase, 'hover:bg-secondary')}>
           <ChevronLeft className="size-4" />
         </Link>
       ) : (
@@ -35,7 +36,7 @@ export function Pagination({ page, pageCount }: Props) {
       {pages.map((p) => (
         <Link
           key={p}
-          href={`?page=${p}`}
+          href={buildHref(p)}
           aria-label={`Page ${p}`}
           aria-current={p === page ? 'page' : undefined}
           className={cn(
@@ -53,7 +54,7 @@ export function Pagination({ page, pageCount }: Props) {
       ))}
 
       {page < pageCount ? (
-        <Link href={`?page=${page + 1}`} aria-label="Next page" className={cn(arrowBase, 'hover:bg-secondary')}>
+        <Link href={buildHref(page + 1)} aria-label="Next page" className={cn(arrowBase, 'hover:bg-secondary')}>
           <ChevronRight className="size-4" />
         </Link>
       ) : (

@@ -45,6 +45,15 @@ export async function setCartEmail(cartId: string, email: string): Promise<void>
   await medusa.store.cart.update(cartId, { email })
 }
 
+function findStripeClientSecret(paymentSessions: unknown[]): string | null {
+  if (!Array.isArray(paymentSessions)) return null
+  const session = paymentSessions.find(
+    (s: { provider_id: string; status: string; data?: { client_secret?: string } }) =>
+      s.provider_id === 'pp_stripe_stripe' && s.status === 'pending',
+  ) as { data?: { client_secret?: string } } | undefined
+  return session?.data?.client_secret ?? null
+}
+
 export async function initPaymentSession(cartId: string): Promise<string> {
   const base = process.env.NEXT_PUBLIC_MEDUSA_URL!
   const pk = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY!
@@ -53,30 +62,30 @@ export async function initPaymentSession(cartId: string): Promise<string> {
     'x-publishable-api-key': pk,
   }
 
-  // Step 1: fetch cart with its payment collection and existing sessions
+  // Step 1: fetch cart with payment collection AND its sessions expanded.
+  // Without expanding payment_sessions, pc.payment_sessions is undefined even
+  // when a session already exists, causing a redundant POST that triggers
+  // Medusa's "recreate" path and the Stripe empty-payment_method error.
   let paymentCollectionId: string | null = null
-  let existingClientSecret: string | null = null
 
-  const cartRes = await fetch(`${base}/store/carts/${cartId}?fields=%2Bpayment_collection`, {
-    headers,
-  })
+  const cartRes = await fetch(
+    `${base}/store/carts/${cartId}?fields=%2Bpayment_collection%2C%2Bpayment_collection.payment_sessions`,
+    { headers },
+  )
   if (cartRes.ok) {
     const { cart } = await cartRes.json()
     const pc = cart?.payment_collection
     if (pc?.id) {
       paymentCollectionId = pc.id
-      const stripeSession = pc.payment_sessions?.find(
-        (s: { provider_id: string; status: string; data?: { client_secret?: string } }) =>
-          s.provider_id === 'pp_stripe_stripe' && s.status === 'pending',
-      )
-      existingClientSecret = stripeSession?.data?.client_secret ?? null
+      const secret = findStripeClientSecret(pc.payment_sessions ?? [])
+      if (secret) return secret
     }
   }
 
-  // Return existing client_secret if we already have a valid pending session
-  if (existingClientSecret) return existingClientSecret
-
-  // Step 2: create payment collection if needed
+  // Step 2: create payment collection if needed.
+  // Guard against the race condition where two concurrent calls both see no
+  // payment_collection and both try to create one — the loser gets a 500.
+  // In that case, re-fetch the cart to pick up the winner's collection.
   if (!paymentCollectionId) {
     const colRes = await fetch(`${base}/store/payment-collections`, {
       method: 'POST',
@@ -84,11 +93,29 @@ export async function initPaymentSession(cartId: string): Promise<string> {
       body: JSON.stringify({ cart_id: cartId }),
     })
     if (!colRes.ok) {
-      const err = await colRes.json().catch(() => ({}))
-      throw new Error(`[col ${colRes.status}] ${err.message ?? 'Payment collection failed'}`)
+      if (colRes.status === 500) {
+        const retryRes = await fetch(
+          `${base}/store/carts/${cartId}?fields=%2Bpayment_collection%2C%2Bpayment_collection.payment_sessions`,
+          { headers },
+        )
+        if (retryRes.ok) {
+          const { cart: retryCart } = await retryRes.json()
+          const pc = retryCart?.payment_collection
+          if (pc?.id) {
+            paymentCollectionId = pc.id
+            const secret = findStripeClientSecret(pc.payment_sessions ?? [])
+            if (secret) return secret
+          }
+        }
+      }
+      if (!paymentCollectionId) {
+        const err = await colRes.json().catch(() => ({}))
+        throw new Error(`[col ${colRes.status}] ${err.message ?? 'Payment collection failed'}`)
+      }
+    } else {
+      const colData = await colRes.json()
+      paymentCollectionId = colData.payment_collection.id
     }
-    const colData = await colRes.json()
-    paymentCollectionId = colData.payment_collection.id
   }
 
   // Step 3: create Stripe payment session

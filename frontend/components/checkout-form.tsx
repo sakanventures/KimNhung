@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js'
@@ -172,13 +172,21 @@ export function CheckoutForm() {
   const { cart, clearCart } = useCart()
   const [clientSecret, setClientSecret] = useState<string | null>(null)
   const [initError, setInitError] = useState<string | null>(null)
+  // Prevent concurrent calls when React StrictMode or cart context re-renders
+  // fire the effect multiple times for the same cart ID.
+  const initializedForCartRef = useRef<string | null>(null)
 
   useEffect(() => {
     if (!cart?.id) return
+    if (initializedForCartRef.current === cart.id) return
+    initializedForCartRef.current = cart.id
     setInitError(null)
     initPaymentSession(cart.id)
       .then(setClientSecret)
-      .catch((err) => setInitError(err?.message ?? 'Could not initialize payment'))
+      .catch((err) => {
+        initializedForCartRef.current = null // allow retry on next render
+        setInitError(err?.message ?? 'Could not initialize payment')
+      })
   }, [cart?.id])
 
   if (!cart || cart.items.length === 0) {
