@@ -113,7 +113,7 @@ export function SearchBar({
           aria-autocomplete="list"
           aria-controls="search-listbox"
           aria-activedescendant={activeIndex >= 0 ? `search-option-${activeIndex}` : undefined}
-          className="h-11 w-full rounded-full border border-border bg-muted/60 pl-11 pr-10 text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground focus:border-primary focus:bg-background focus:ring-2 focus:ring-primary/20"
+          className="h-11 w-full rounded-full border border-border bg-muted/60 pl-11 pr-10 text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground focus:border-primary focus:bg-background focus:ring-2 focus:ring-primary/20 [&::-webkit-search-cancel-button]:hidden"
         />
         {query && (
           <button
