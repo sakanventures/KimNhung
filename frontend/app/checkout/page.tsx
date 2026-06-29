@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { SiteHeader } from '@/components/site-header'
+import { GlobalHeader } from '@/components/global-header'
 import { SiteFooter } from '@/components/site-footer'
 import { AnnouncementBar } from '@/components/announcement-bar'
 import { CheckoutForm, OrderSummary } from '@/components/checkout-form'
@@ -11,7 +11,7 @@ export default function CheckoutPage() {
   return (
     <>
       <AnnouncementBar />
-      <SiteHeader />
+      <GlobalHeader />
       <main className="min-h-[70vh]">
         <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
           <div className="mb-8 flex items-center gap-3">

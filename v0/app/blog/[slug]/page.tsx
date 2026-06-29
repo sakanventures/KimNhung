@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Clock, Calendar, ArrowRight } from 'lucide-react'
 import { BLOG_POSTS } from '@/lib/site-data'
-import { GlobalHeader } from '@/components/global-header'
+import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 
 type Props = { params: Promise<{ slug: string }> }
@@ -34,12 +34,13 @@ export default async function BlogDetailPage({ params }: Props) {
   if (!post) notFound()
 
   const related = BLOG_POSTS.filter((p) => p.slug !== slug).slice(0, 3)
-  const headings = post.body.filter((b) => b.type === 'h2') as { type: 'h2'; content: string }[]
-  const isRecipe = post.category === 'Recipes'
+
+  // Build heading list for sidebar TOC
+  const headings = post.body.filter((b) => b.type === 'h2')
 
   return (
     <>
-      <GlobalHeader />
+      <SiteHeader />
       <main>
         {/* Hero */}
         <div className="relative h-[52vh] min-h-72 overflow-hidden bg-foreground/10">
@@ -58,7 +59,9 @@ export default async function BlogDetailPage({ params }: Props) {
                 <ArrowLeft className="size-3.5" />
                 All articles
               </Link>
-              <span className={`mb-3 flex w-fit items-center rounded-full px-3 py-1 text-xs font-semibold ${post.categoryColor}`}>
+              <span
+                className={`mb-3 flex w-fit items-center rounded-full px-3 py-1 text-xs font-semibold ${post.categoryColor}`}
+              >
                 {post.category}
               </span>
               <h1 className="max-w-3xl text-balance font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
@@ -70,8 +73,12 @@ export default async function BlogDetailPage({ params }: Props) {
                     {post.author.charAt(0)}
                   </span>
                   <div className="flex flex-col leading-tight">
-                    <span className="text-sm font-semibold text-foreground">{post.author}</span>
-                    <span className="text-xs text-muted-foreground">{post.authorRole}</span>
+                    <span className="text-sm font-semibold text-foreground">
+                      {post.author}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      {post.authorRole}
+                    </span>
                   </div>
                 </div>
                 <span className="h-4 w-px bg-border" aria-hidden="true" />
@@ -91,6 +98,7 @@ export default async function BlogDetailPage({ params }: Props) {
         {/* Body + sidebar */}
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-[1fr_260px] lg:gap-12 xl:grid-cols-[1fr_300px]">
+            {/* Article body */}
             <article className="prose prose-neutral max-w-none dark:prose-invert
               prose-headings:font-heading prose-headings:tracking-tight prose-headings:text-foreground
               prose-p:text-foreground/80 prose-p:leading-relaxed
@@ -103,7 +111,10 @@ export default async function BlogDetailPage({ params }: Props) {
                   return (
                     <h2
                       key={i}
-                      id={block.content.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}
+                      id={block.content
+                        .toLowerCase()
+                        .replace(/[^a-z0-9]+/g, '-')
+                        .replace(/(^-|-$)/g, '')}
                     >
                       {block.content}
                     </h2>
@@ -111,7 +122,9 @@ export default async function BlogDetailPage({ params }: Props) {
                 }
                 if (block.type === 'h3') return <h3 key={i}>{block.content}</h3>
                 if (block.type === 'p') return <p key={i}>{block.content}</p>
-                if (block.type === 'blockquote') return <blockquote key={i}>{block.content}</blockquote>
+                if (block.type === 'blockquote') {
+                  return <blockquote key={i}>{block.content}</blockquote>
+                }
                 if (block.type === 'img') {
                   return (
                     <img
@@ -122,23 +135,6 @@ export default async function BlogDetailPage({ params }: Props) {
                     />
                   )
                 }
-                if (block.type === 'ul') {
-                  return (
-                    <ul
-                      key={i}
-                      className={isRecipe ? 'not-prose my-6 grid grid-cols-2 gap-x-8 gap-y-2' : undefined}
-                    >
-                      {block.content.map((item, j) => (
-                        <li key={j} className={isRecipe ? 'flex items-start gap-2 text-sm text-foreground/80' : undefined}>
-                          {isRecipe && (
-                            <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary" />
-                          )}
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  )
-                }
                 return null
               })}
             </article>
@@ -146,6 +142,7 @@ export default async function BlogDetailPage({ params }: Props) {
             {/* Sticky sidebar */}
             <aside className="hidden lg:block">
               <div className="sticky top-28 flex flex-col gap-6">
+                {/* Table of contents */}
                 {headings.length > 0 && (
                   <div className="rounded-2xl border border-border bg-card p-5">
                     <p className="mb-3 text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground">
@@ -174,6 +171,7 @@ export default async function BlogDetailPage({ params }: Props) {
                   </div>
                 )}
 
+                {/* Author card */}
                 <div className="rounded-2xl border border-border bg-card p-5">
                   <p className="mb-3 text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground">
                     Written by
@@ -183,12 +181,17 @@ export default async function BlogDetailPage({ params }: Props) {
                       {post.author.charAt(0)}
                     </span>
                     <div>
-                      <p className="font-semibold text-foreground">{post.author}</p>
-                      <p className="text-xs text-muted-foreground">{post.authorRole}</p>
+                      <p className="font-semibold text-foreground">
+                        {post.author}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {post.authorRole}
+                      </p>
                     </div>
                   </div>
                 </div>
 
+                {/* Back to blog */}
                 <Link
                   href="/blog"
                   className="flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
@@ -229,7 +232,9 @@ export default async function BlogDetailPage({ params }: Props) {
                       />
                     </div>
                     <div className="flex flex-1 flex-col p-5">
-                      <span className={`inline-flex w-fit rounded-full px-2.5 py-0.5 text-xs font-semibold ${rp.categoryColor}`}>
+                      <span
+                        className={`inline-flex w-fit rounded-full px-2.5 py-0.5 text-xs font-semibold ${rp.categoryColor}`}
+                      >
                         {rp.category}
                       </span>
                       <h3 className="mt-2.5 text-balance font-heading text-base font-semibold leading-snug tracking-tight text-foreground">

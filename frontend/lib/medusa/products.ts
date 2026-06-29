@@ -1,7 +1,7 @@
 import { medusa, REGION_ID } from './client'
 import type { MockProduct } from '@/lib/mock/products'
 
-export type StoreProduct = MockProduct & { variantId: string }
+export type StoreProduct = MockProduct & { variantId: string; images: string[] }
 
 // Fields added on top of the storefront default set
 const PRODUCT_FIELDS =
@@ -23,6 +23,7 @@ function normalize(p: any): StoreProduct {
     category: p.categories?.[0]?.handle ?? '',
     description: p.description ?? '',
     thumbnail: p.thumbnail ?? p.images?.[0]?.url ?? '',
+    images: (p.images ?? []).map((img: { url: string }) => img.url).filter(Boolean),
     price: calculatedAmount,
     compareAtPrice: isOnSale ? originalAmount : undefined,
     unit: variant.metadata?.unit ?? 'each',

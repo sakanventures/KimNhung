@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { SiteHeader } from '@/components/site-header'
+import { GlobalHeader } from '@/components/global-header'
 import { SiteFooter } from '@/components/site-footer'
 import { AnnouncementBar } from '@/components/announcement-bar'
 import { retrieveOrder } from '@/lib/medusa/checkout'
@@ -19,7 +19,7 @@ export default async function OrderConfirmationPage({ params }: Props) {
   return (
     <>
       <AnnouncementBar />
-      <SiteHeader />
+      <GlobalHeader />
       <main className="min-h-[70vh]">
         <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:px-8">
           {/* Success header */}

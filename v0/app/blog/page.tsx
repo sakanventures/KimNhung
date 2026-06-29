@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { BLOG_POSTS } from '@/lib/site-data'
-import { GlobalHeader } from '@/components/global-header'
+import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { BlogFilmstrip } from '@/components/blog-filmstrip'
 
@@ -13,8 +13,9 @@ export const metadata: Metadata = {
 export default function BlogIndexPage() {
   return (
     <>
-      <GlobalHeader />
+      <SiteHeader />
       <main>
+        {/* Page header */}
         <div className="border-b border-border bg-secondary/40 py-12 lg:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <span className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">
@@ -30,6 +31,7 @@ export default function BlogIndexPage() {
           </div>
         </div>
 
+        {/* Posts grid + pagination */}
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
           <BlogFilmstrip posts={BLOG_POSTS} />
         </div>

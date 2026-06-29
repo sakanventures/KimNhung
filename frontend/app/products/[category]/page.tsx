@@ -4,7 +4,7 @@ import type { Metadata } from 'next'
 import { DEPARTMENTS } from '@/lib/site-data'
 import { getProductsByCategory } from '@/lib/medusa/products'
 import { ProductCard } from '@/components/product-card'
-import { SiteHeader } from '@/components/site-header'
+import { GlobalHeader } from '@/components/global-header'
 import { SiteFooter } from '@/components/site-footer'
 import { AnnouncementBar } from '@/components/announcement-bar'
 
@@ -26,7 +26,7 @@ export default async function CategoryPage({ params }: Props) {
   return (
     <>
       <AnnouncementBar />
-      <SiteHeader />
+      <GlobalHeader />
       <main>
         {/* Page header */}
         <div className="border-b border-border bg-background">

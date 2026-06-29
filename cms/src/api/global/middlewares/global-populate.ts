@@ -23,6 +23,7 @@ const globalPopulate: Core.MiddlewareHandler = async (ctx, next) => {
             Title: true,
           },
         },
+        Link: true,
       },
     },
     Footer: {

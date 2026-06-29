@@ -54,8 +54,8 @@ export function SiteHeader({ utilityItems, logoUrl, darkLogoUrl: _darkLogoUrl, l
   ]
 
   const navLinks = cmsNavLinks?.length
-    ? cmsNavLinks.map((l) => ({ label: l.Title, href: l.Url }))
-    : fallbackNavLinks
+    ? cmsNavLinks.map((l) => ({ id: l.id, label: l.Title, href: l.Url || '/' }))
+    : fallbackNavLinks.map((l, i) => ({ id: i, label: l.label, href: l.href }))
 
   return (
     <header className="sticky top-0 z-50">
@@ -204,7 +204,7 @@ export function SiteHeader({ utilityItems, logoUrl, darkLogoUrl: _darkLogoUrl, l
         >
           {navLinks.map((link) => (
             <Link
-              key={link.href}
+              key={link.id}
               href={link.href}
               className="rounded-full px-3.5 py-1.5 text-sm font-semibold text-foreground/80 transition-colors hover:bg-muted hover:text-primary"
             >
@@ -229,7 +229,7 @@ export function SiteHeader({ utilityItems, logoUrl, darkLogoUrl: _darkLogoUrl, l
             </form>
             {navLinks.map((link) => (
               <Link
-                key={link.href}
+                key={link.id}
                 href={link.href}
                 onClick={() => setOpen(false)}
                 className="flex items-center justify-between rounded-lg px-3 py-3 text-base font-semibold text-foreground transition-colors hover:bg-muted"

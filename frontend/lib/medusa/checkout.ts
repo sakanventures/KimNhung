@@ -53,17 +53,30 @@ export async function initPaymentSession(cartId: string): Promise<string> {
     'x-publishable-api-key': pk,
   }
 
-  // Step 1: check if cart already has a payment collection; create one if not
+  // Step 1: fetch cart with its payment collection and existing sessions
   let paymentCollectionId: string | null = null
+  let existingClientSecret: string | null = null
 
   const cartRes = await fetch(`${base}/store/carts/${cartId}?fields=%2Bpayment_collection`, {
     headers,
   })
   if (cartRes.ok) {
     const { cart } = await cartRes.json()
-    paymentCollectionId = cart?.payment_collection?.id ?? null
+    const pc = cart?.payment_collection
+    if (pc?.id) {
+      paymentCollectionId = pc.id
+      const stripeSession = pc.payment_sessions?.find(
+        (s: { provider_id: string; status: string; data?: { client_secret?: string } }) =>
+          s.provider_id === 'pp_stripe_stripe' && s.status === 'pending',
+      )
+      existingClientSecret = stripeSession?.data?.client_secret ?? null
+    }
   }
 
+  // Return existing client_secret if we already have a valid pending session
+  if (existingClientSecret) return existingClientSecret
+
+  // Step 2: create payment collection if needed
   if (!paymentCollectionId) {
     const colRes = await fetch(`${base}/store/payment-collections`, {
       method: 'POST',
@@ -78,7 +91,7 @@ export async function initPaymentSession(cartId: string): Promise<string> {
     paymentCollectionId = colData.payment_collection.id
   }
 
-  // Step 2: initialize Stripe session on the collection
+  // Step 3: create Stripe payment session
   const sesRes = await fetch(
     `${base}/store/payment-collections/${paymentCollectionId}/payment-sessions`,
     {
