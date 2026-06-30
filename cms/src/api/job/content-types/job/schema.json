@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "jobs",
+  "info": {
+    "singularName": "job",
+    "pluralName": "jobs",
+    "displayName": "Job"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "firstName": {
+      "type": "string",
+      "required": true
+    },
+    "lastName": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "phone": {
+      "type": "string"
+    },
+    "availability": {
+      "type": "enumeration",
+      "enum": ["Full-time", "Part-time", "Either"]
+    },
+    "message": {
+      "type": "text"
+    },
+    "jobTitle": {
+      "type": "string"
+    },
+    "jobId": {
+      "type": "string"
+    }
+  }
+}
