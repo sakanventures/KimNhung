@@ -6,13 +6,15 @@ import { useTranslation } from '@/lib/i18n'
 import { getStrapiMedia } from '@/lib/utils'
 import type { NewsletterBlock } from '@/data/loaders'
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 interface Props {
   data?: NewsletterBlock | null
 }
 
 export function Newsletter({ data }: Props) {
   const [email, setEmail] = useState('')
-  const [submitted, setSubmitted] = useState(false)
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'duplicate' | 'error'>('idle')
   const { t } = useTranslation()
   const n = t.newsletter
 
@@ -23,10 +25,26 @@ export function Newsletter({ data }: Props) {
   const disclaimer = data?.Text?.[0]?.Text ?? n.disclaimer
   const imageUrl = data?.Image?.url ? getStrapiMedia(data.Image.url) : null
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (!email) return
-    setSubmitted(true)
+    if (!EMAIL_RE.test(email)) return
+    setStatus('loading')
+    try {
+      const res = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      if (res.ok) {
+        setStatus('success')
+      } else if (res.status === 409) {
+        setStatus('duplicate')
+      } else {
+        setStatus('error')
+      }
+    } catch {
+      setStatus('error')
+    }
   }
 
   return (
@@ -46,12 +64,23 @@ export function Newsletter({ data }: Props) {
                 {description}
               </p>
 
-              {submitted ? (
+              {status === 'success' && (
                 <div className="mt-6 flex items-center gap-3 rounded-2xl border border-leaf/30 bg-leaf/10 px-5 py-4 text-leaf">
                   <Check className="size-5 shrink-0" />
                   <p className="text-sm font-medium">{n.success}</p>
                 </div>
-              ) : (
+              )}
+
+              {(status === 'duplicate' || status === 'error') && (
+                <div className="mt-6 flex items-center gap-3 rounded-2xl border border-berry/30 bg-berry/10 px-5 py-4 text-berry">
+                  <Mail className="size-5 shrink-0" />
+                  <p className="text-sm font-medium">
+                    {status === 'duplicate' ? n.duplicate : n.error}
+                  </p>
+                </div>
+              )}
+
+              {(status === 'idle' || status === 'loading' || status === 'duplicate' || status === 'error') && (
                 <form
                   onSubmit={handleSubmit}
                   className="mt-6 flex flex-col gap-3 sm:flex-row"
@@ -66,13 +95,15 @@ export function Newsletter({ data }: Props) {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder={n.placeholder}
-                    className="flex-1 rounded-full border border-border bg-background px-5 py-3 text-base text-foreground outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+                    disabled={status === 'loading'}
+                    className="flex-1 rounded-full border border-border bg-background px-5 py-3 text-base text-foreground outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
                   />
                   <button
                     type="submit"
-                    className="rounded-full bg-primary px-6 py-3 text-base font-semibold text-primary-foreground transition-transform hover:scale-[1.03]"
+                    disabled={status === 'loading'}
+                    className="rounded-full bg-primary px-6 py-3 text-base font-semibold text-primary-foreground transition-transform hover:scale-[1.03] disabled:opacity-50 disabled:hover:scale-100"
                   >
-                    {n.subscribe}
+                    {status === 'loading' ? '…' : n.subscribe}
                   </button>
                 </form>
               )}

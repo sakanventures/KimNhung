@@ -168,6 +168,8 @@ export const vi: Translations = {
     placeholder: 'you@example.com',
     subscribe: 'Đăng ký',
     success: 'Bạn đã đăng ký! Theo dõi hộp thư để nhận khuyến mãi tuần này.',
+    duplicate: 'Bạn đã đăng ký rồi — kiểm tra hộp thư để nhận khuyến mãi tuần này.',
+    error: 'Đã xảy ra lỗi. Vui lòng thử lại sau giây lát.',
     disclaimer: 'Bằng cách đăng ký, bạn đồng ý nhận email marketing. Hủy đăng ký bất cứ lúc nào.',
   },
   footer: {

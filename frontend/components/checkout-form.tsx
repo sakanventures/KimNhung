@@ -6,7 +6,7 @@ import { loadStripe } from '@stripe/stripe-js'
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { useCart } from '@/lib/cart-context'
 import { formatPrice } from '@/lib/utils'
-import { initPaymentSession, setCartEmail, completeCart } from '@/lib/medusa/checkout'
+import { initPaymentSession, setCartContactInfo, completeCart } from '@/lib/medusa/checkout'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
 
@@ -37,8 +37,7 @@ function PaymentForm({ cartId }: { cartId: string }) {
     setError(null)
 
     try {
-      // Set email on cart before confirming payment
-      await setCartEmail(cartId, email.trim())
+      await setCartContactInfo(cartId, email.trim(), firstName.trim(), lastName.trim(), phone.trim() || undefined)
 
       // Confirm payment with Stripe — redirect: 'if_required' keeps us on-page
       // for standard cards; only redirects for 3DS/bank flows

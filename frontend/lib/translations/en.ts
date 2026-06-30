@@ -166,6 +166,8 @@ export const en = {
     placeholder: 'you@example.com',
     subscribe: 'Subscribe',
     success: "You're on the list! Watch your inbox for this week's specials.",
+    duplicate: "You're already subscribed — check your inbox for this week's specials.",
+    error: 'Something went wrong. Please try again in a moment.',
     disclaimer: 'By subscribing you agree to receive marketing emails. Unsubscribe anytime.',
   },
   footer: {

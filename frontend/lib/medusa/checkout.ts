@@ -41,8 +41,21 @@ function formatFallbackOrderNumber(o: any): string {
   return `KN-${dateStr}-${String(o.display_id).padStart(3, '0')}`
 }
 
-export async function setCartEmail(cartId: string, email: string): Promise<void> {
-  await medusa.store.cart.update(cartId, { email })
+export async function setCartContactInfo(
+  cartId: string,
+  email: string,
+  firstName: string,
+  lastName: string,
+  phone?: string,
+): Promise<void> {
+  await medusa.store.cart.update(cartId, {
+    email,
+    billing_address: {
+      first_name: firstName,
+      last_name: lastName,
+      phone: phone || undefined,
+    },
+  })
 }
 
 function findStripeClientSecret(paymentSessions: unknown[]): string | null {

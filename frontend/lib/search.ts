@@ -1,5 +1,7 @@
 import { getAllProducts, type StoreProduct } from './medusa/products'
-import { BLOG_POSTS, DEPARTMENTS } from './site-data'
+import { DEPARTMENTS } from './site-data'
+import { getAllCommunityPosts } from '@/data/loaders'
+import { getStrapiMedia } from './utils'
 import { formatPrice } from './utils'
 
 export type SearchResult = {
@@ -16,7 +18,18 @@ export type SearchResult = {
   was?: string
 }
 
-function buildIndex(products: StoreProduct[]): SearchResult[] {
+const CATEGORY_COLOR_MAP: Record<string, string> = {
+  Seafood:  'bg-teal/15 text-teal',
+  Culture:  'bg-berry/12 text-berry',
+  Recipes:  'bg-tangerine/15 text-tangerine',
+  Beauty:   'bg-leaf/15 text-leaf',
+  Guides:   'bg-gold/15 text-gold',
+}
+
+function buildIndex(
+  products: StoreProduct[],
+  posts: Awaited<ReturnType<typeof getAllCommunityPosts>>['data'],
+): SearchResult[] {
   const deptNameMap = Object.fromEntries(DEPARTMENTS.map((d) => [d.id, d.name]))
 
   return [
@@ -33,16 +46,21 @@ function buildIndex(products: StoreProduct[]): SearchResult[] {
       unit: p.unit,
       was: p.compareAtPrice !== undefined ? formatPrice(p.compareAtPrice) : undefined,
     })),
-    ...BLOG_POSTS.map((b) => ({
-      type: 'post' as const,
-      slug: b.slug,
-      title: b.title,
-      subtitle: b.excerpt.slice(0, 80) + (b.excerpt.length > 80 ? '…' : ''),
-      image: b.coverImage,
-      tag: b.category,
-      tagColor: b.categoryColor,
-      href: `/blog/${b.slug}`,
-    })),
+    ...posts.map((p) => {
+      const cat = p.Categories?.[0]?.Title ?? 'Community'
+      const img = getStrapiMedia(p.Thumbnail?.url ?? null) ?? ''
+      const excerpt = (p.Description ?? '').slice(0, 80) + ((p.Description?.length ?? 0) > 80 ? '…' : '')
+      return {
+        type: 'post' as const,
+        slug: p.Slug,
+        title: p.Title,
+        subtitle: excerpt,
+        image: img,
+        tag: cat,
+        tagColor: CATEGORY_COLOR_MAP[cat] ?? 'bg-primary/10 text-primary',
+        href: `/community/${p.Slug}`,
+      }
+    }),
     ...DEPARTMENTS.map((d) => ({
       type: 'department' as const,
       slug: d.id,
@@ -57,8 +75,11 @@ function buildIndex(products: StoreProduct[]): SearchResult[] {
 }
 
 export async function getSearchIndex(): Promise<SearchResult[]> {
-  const products = await getAllProducts()
-  return buildIndex(products)
+  const [products, { data: posts }] = await Promise.all([
+    getAllProducts(),
+    getAllCommunityPosts(1, 100),
+  ])
+  return buildIndex(products, posts)
 }
 
 export function runSearch(index: SearchResult[], query: string, limit = 60): SearchResult[] {
